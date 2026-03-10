@@ -38,6 +38,8 @@ class demod_samp2str(gr.sync_block):
     def work(self, input_items, output_items):
         in0 = input_items[0]
         # <+signal processing here+>
+        # in0 = [1 if x>=1 else x for x in in0]
+        # in0 = [-1 if x<=-1 else x for x in in0]
 
         next_char = np.append(self.bits,self.string_from_enqueue(in0, self.fs, self.t))
         if next_char != None:
@@ -68,7 +70,7 @@ class demod_samp2str(gr.sync_block):
             max_cor = np.max(cor)
             idx_max_cor = np.argmax(cor)
 
-            if(max_cor >= 0.5*self.preamble_length):
+            if(max_cor >= 0.95*self.preamble_length):
                 print("found pre")
                 signal_start_idx = idx_max_cor + self.preamble_length
                 self.is_signal = True
@@ -155,3 +157,18 @@ class demod_samp2str(gr.sync_block):
             return True
         else:
             return False
+        
+
+    def normalized_correlate(self, signal, template):
+        n = len(template)
+        cor = np.correlate(signal, template, "valid")
+
+        template_energy = np.sqrt(np.sum(template ** 2))
+
+        signal_sq = signal ** 2
+        signal_energy = np.sqrt(np.convolve(signal_sq, np.ones(n), 'valid'))
+
+        denom = signal_energy * template_energy
+        denom[denom == 0] = 1e-10
+
+        return cor / denom    
