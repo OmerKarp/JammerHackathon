@@ -14,7 +14,7 @@ class barrage(gr.sync_block):
         gr.sync_block.__init__(
             self,
             name="barrage",
-            in_sig=None,           # Source block — no input
+            in_sig=None,
             out_sig=[np.complex64]
         )
 
@@ -35,13 +35,13 @@ class barrage(gr.sync_block):
         # Internal filter state (overlap-save buffer)
         self._filter_state = np.zeros(len(self._taps) - 1, dtype=np.complex64)
 
+
     # ------------------------------------------------------------------
-    # Private helpers
+    # Create BPS to direct the noise
     # ------------------------------------------------------------------
 
     def _build_taps(self):
         """Build a complex bandpass FIR filter for [start_freq, end_freq]."""
-        center_freq  = (self._start_freq + self._end_freq) / 2.0
         bandwidth    = self._end_freq - self._start_freq
         transition_bw = max(bandwidth * 0.1, 1e3)   # 10% of BW, min 1 kHz
 
@@ -97,25 +97,3 @@ class barrage(gr.sync_block):
 
         out[:] = filtered
         return n
-
-    # ------------------------------------------------------------------
-    # Runtime setters (allow live adjustment via callbacks/message ports)
-    # ------------------------------------------------------------------
-
-    def set_start_freq(self, start_freq):
-        self._start_freq = start_freq
-        self._taps = self._build_taps()
-        self._filter_state = np.zeros(len(self._taps) - 1, dtype=np.complex64)
-
-    def set_end_freq(self, end_freq):
-        self._end_freq = end_freq
-        self._taps = self._build_taps()
-        self._filter_state = np.zeros(len(self._taps) - 1, dtype=np.complex64)
-
-    def set_amplitude(self, amplitude):
-        self._amplitude = amplitude
-
-    def set_samp_rate(self, samp_rate):
-        self._samp_rate = samp_rate
-        self._taps = self._build_taps()
-        self._filter_state = np.zeros(len(self._taps) - 1, dtype=np.complex64)
