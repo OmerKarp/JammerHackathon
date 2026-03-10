@@ -9,6 +9,7 @@
 
 import numpy as np
 from gnuradio import gr
+from scipy.signal import find_peaks
 
 class demod_samp2str(gr.sync_block):
     """
@@ -38,8 +39,6 @@ class demod_samp2str(gr.sync_block):
     def work(self, input_items, output_items):
         in0 = input_items[0]
         # <+signal processing here+>
-        # in0 = [1 if x>=1 else x for x in in0]
-        # in0 = [-1 if x<=-1 else x for x in in0]
 
         next_char = np.append(self.bits,self.string_from_enqueue(in0, self.fs, self.t))
         if next_char != None:
@@ -49,7 +48,7 @@ class demod_samp2str(gr.sync_block):
 
 
     def string_from_enqueue(self,in0,fs, t):
-
+        threshold = 0.8 * self.preamble_length
 
         full_data = np.concatenate((self.remainder, np.array(in0)))
         self.remainder = np.array([])
@@ -58,27 +57,27 @@ class demod_samp2str(gr.sync_block):
 
         #find signal start idx
         if(self.is_signal == False):
-            if len(full_data) < self.preamble_length: #!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            if len(full_data) < self.preamble_length: 
                 self.remainder = full_data
                 return None
-            # down_sample_len = len(in0)
-            non_zero_indexes = np.nonzero(full_data<=-1)[0] #all possible starts to the preamble(all non zero elements)
-
+        
             preamble_cor = self.preamble_value*np.ones(self.preamble_length)
             cor = np.correlate(full_data, preamble_cor, "valid")
 
             max_cor = np.max(cor)
-            idx_max_cor = np.argmax(cor)
+            #idx_max_cor = np.argmax(cor)
+            peaks,_ = find_peaks(cor, distance=self.samples_per_symble,height=threshold )
 
-            if(max_cor >= 0.95*self.preamble_length):
-                print("found pre")
-                signal_start_idx = idx_max_cor + self.preamble_length
-                self.is_signal = True
-
-            #if we didnt find the preamble we dont want the remainder to increase in size forever keep only the nessery part - preamble length
-            if signal_start_idx == None:
+            if(len(peaks)==0):
                 self.remainder = full_data[-self.preamble_length:]
                 return None
+            
+            idx_max_cor = peaks[0]
+
+            
+            print("found pre")
+            signal_start_idx = idx_max_cor + self.preamble_length
+            self.is_signal = True
         
         else:
             signal_start_idx = 0
@@ -100,7 +99,6 @@ class demod_samp2str(gr.sync_block):
         cropped_data = start_signal_to_end[:-new_remainder_len] #data to go throu for this iteration
 
         indices = np.arange(0,len(cropped_data), self.sample_per_pulse)
-        #down_sampled = cropped_data[indices]
 
         down_sampled = [((np.mean(cropped_data[i:i+self.sample_per_pulse])>0)*2-1) for i in indices] 
 
@@ -133,11 +131,8 @@ class demod_samp2str(gr.sync_block):
             return ''
 
         
-        # print("hihihhi")
-        # print(bit_msg)
-        
         bit_msg = ''.join(map(str,bit_msg))  
-        # print(bit_msg)
+
         msg = (chr(int(bit_msg,2)))
         return msg
 
