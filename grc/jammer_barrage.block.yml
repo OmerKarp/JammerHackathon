@@ -4,7 +4,7 @@ category: '[jammer]'
 
 templates:
   imports: from gnuradio import jammer
-  make: jammer.barrage(${start_freq}, ${end_freq}, ${power}, ${samp_rate})
+  make: jammer.barrage(${start_freq}, ${end_freq}, ${Power}, ${samp_rate})
 
 #  Make one 'parameters' list entry for every parameter you want settable from the GUI.
 #     Keys include:
@@ -23,8 +23,8 @@ parameters:
     dtype: float
     default: '500e3'
 
--   id: power
-    label: power
+-   id: Power
+    label: Power
     dtype: float
     default: '1.0'
 
