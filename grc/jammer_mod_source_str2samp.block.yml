@@ -4,7 +4,7 @@ category: '[jammer]'
 
 templates:
   imports: from gnuradio import jammer
-  make: jammer.mod_source_str2samp(${t})
+  make: jammer.mod_source_str2samp(${t}, ${fs}, ${msg})
 
 #  Make one 'parameters' list entry for every parameter you want settable from the GUI.
 #     Keys include:
@@ -20,9 +20,11 @@ parameters:
 - id: fs
 #  label: ...
   dtype: float
+  default: 1000
 - id: msg
 #  label: ...
   dtype: string
+  default: "hello"
 
 #  Make one 'inputs' list entry per input and one 'outputs' list entry per output.
 #  Keys include:

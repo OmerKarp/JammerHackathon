@@ -59,7 +59,7 @@ blocks:
     phase: '0'
     samp_rate: samp_rate
     showports: 'False'
-    type: float
+    type: complex
     waveform: analog.GR_COS_WAVE
   states:
     bus_sink: false
@@ -77,13 +77,13 @@ blocks:
     maxoutbuf: '0'
     minoutbuf: '0'
     num_inputs: '2'
-    type: float
+    type: complex
     vlen: '1'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [816, 208.0]
+    coordinate: [728, 168.0]
     rotation: 0
     state: enabled
 - name: blocks_throttle2_0
@@ -98,7 +98,7 @@ blocks:
     maxoutbuf: '0'
     minoutbuf: '0'
     samples_per_second: samp_rate
-    type: float
+    type: complex
     vlen: '1'
   states:
     bus_sink: false
@@ -121,7 +121,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [592, 392.0]
+    coordinate: [640, 368.0]
     rotation: 0
     state: enabled
 - name: qtgui_freq_sink_x_0
@@ -182,7 +182,7 @@ blocks:
     tr_level: '0.0'
     tr_mode: qtgui.TRIG_MODE_FREE
     tr_tag: '""'
-    type: float
+    type: complex
     units: dB
     update_time: '0.10'
     width1: '1'
@@ -202,7 +202,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1032, 200.0]
+    coordinate: [976, 200.0]
     rotation: 0
     state: enabled
 

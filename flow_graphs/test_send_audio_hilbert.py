@@ -24,7 +24,7 @@ from PyQt5 import Qt
 from argparse import ArgumentParser
 from gnuradio.eng_arg import eng_float, intx
 from gnuradio import eng_notation
-from gnuradio import info_with_audio
+from gnuradio import jammer
 import sip
 
 
@@ -281,8 +281,8 @@ class test_send_audio_hilbert(gr.top_block, Qt.QWidget):
                 1e3,
                 window.WIN_HAMMING,
                 6.76))
-        self.info_with_audio_mod_source_str2samp_0_0_0 = info_with_audio.mod_source_str2samp(time, samp_rate, 'hello')
-        self.info_with_audio_demod_samp2str_1 = info_with_audio.demod_samp2str(time, samp_rate, 1, 3)
+        self.jammer_mod_source_str2samp_0 = jammer.mod_source_str2samp(time, samp_rate, 'hello')
+        self.jammer_demod_samp2str_0 = jammer.demod_samp2str(time, samp_rate, 1, 0.1)
         self.hilbert_fc_1 = filter.hilbert_fc(6500, window.WIN_HAMMING, 6.76)
         self.blocks_vco_f_0_0 = blocks.vco_f(samp_rate, (2*math.pi*1e3), 1)
         self.blocks_throttle2_1_0 = blocks.throttle( gr.sizeof_float*1, samp_rate, True, 0 if "auto" == "auto" else max( int(float(0.1) * samp_rate) if "auto" == "time" else int(0.1), 1) )
@@ -304,7 +304,7 @@ class test_send_audio_hilbert(gr.top_block, Qt.QWidget):
         ##################################################
         # Connections
         ##################################################
-        self.connect((self.analog_fm_demod_cf_1, 0), (self.info_with_audio_demod_samp2str_1, 0))
+        self.connect((self.analog_fm_demod_cf_1, 0), (self.jammer_demod_samp2str_0, 0))
         self.connect((self.analog_fm_demod_cf_1, 0), (self.qtgui_freq_sink_x_0_1_0, 0))
         self.connect((self.analog_fm_demod_cf_1, 0), (self.qtgui_time_sink_x_0_2_2, 0))
         self.connect((self.analog_noise_source_x_0_1, 0), (self.blocks_add_xx_1_0, 1))
@@ -316,7 +316,7 @@ class test_send_audio_hilbert(gr.top_block, Qt.QWidget):
         self.connect((self.blocks_throttle2_1_0, 0), (self.blocks_vco_f_0_0, 0))
         self.connect((self.blocks_vco_f_0_0, 0), (self.low_pass_filter_0_0, 0))
         self.connect((self.hilbert_fc_1, 0), (self.blocks_add_xx_1_0, 0))
-        self.connect((self.info_with_audio_mod_source_str2samp_0_0_0, 0), (self.blocks_add_const_vxx_1_0_0, 0))
+        self.connect((self.jammer_mod_source_str2samp_0, 0), (self.blocks_add_const_vxx_1_0_0, 0))
         self.connect((self.low_pass_filter_0, 0), (self.analog_fm_demod_cf_1, 0))
         self.connect((self.low_pass_filter_0_0, 0), (self.hilbert_fc_1, 0))
 

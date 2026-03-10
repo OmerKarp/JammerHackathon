@@ -259,9 +259,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1888, 40.0]
+    coordinate: [1888, 32.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: info_with_audio_mod_source_str2samp_0_0_0
   id: info_with_audio_mod_source_str2samp
   parameters:
@@ -277,7 +277,42 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [32, 272.0]
+    coordinate: [40, 312.0]
+    rotation: 0
+    state: disabled
+- name: jammer_demod_samp2str_0
+  id: jammer_demod_samp2str
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    fs: samp_rate
+    t: time
+    timeout: '0.1'
+    voltage: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1888, 72.0]
+    rotation: 0
+    state: enabled
+- name: jammer_mod_source_str2samp_0
+  id: jammer_mod_source_str2samp
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    fs: samp_rate
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    msg: hello
+    t: time
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [56, 344.0]
     rotation: 0
     state: enabled
 - name: low_pass_filter_0
@@ -703,6 +738,7 @@ blocks:
 
 connections:
 - [analog_fm_demod_cf_1, '0', info_with_audio_demod_samp2str_1, '0']
+- [analog_fm_demod_cf_1, '0', jammer_demod_samp2str_0, '0']
 - [analog_fm_demod_cf_1, '0', qtgui_freq_sink_x_0_1_0, '0']
 - [analog_fm_demod_cf_1, '0', qtgui_time_sink_x_0_2_2, '0']
 - [analog_noise_source_x_0_1, '0', blocks_add_xx_1_0, '1']
@@ -715,6 +751,7 @@ connections:
 - [blocks_vco_f_0_0, '0', low_pass_filter_0_0, '0']
 - [hilbert_fc_1, '0', blocks_add_xx_1_0, '0']
 - [info_with_audio_mod_source_str2samp_0_0_0, '0', blocks_add_const_vxx_1_0_0, '0']
+- [jammer_mod_source_str2samp_0, '0', blocks_add_const_vxx_1_0_0, '0']
 - [low_pass_filter_0, '0', analog_fm_demod_cf_1, '0']
 - [low_pass_filter_0_0, '0', hilbert_fc_1, '0']
 
