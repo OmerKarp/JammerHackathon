@@ -13,10 +13,25 @@ templates:
 #     * dtype (e.g. int, float, complex, byte, short, xxx_vector, ...)
 #     * default
 parameters:
-- id: parametername_replace_me
-  label: FIX ME:
-  dtype: string
-  default: You need to fill in your grc/jammer_barrage.block.yaml
+-   id: start_freq
+    label: Start Frequency (Hz)
+    dtype: float
+    default: '-500e3'
+
+-   id: end_freq
+    label: End Frequency (Hz)
+    dtype: float
+    default: '500e3'
+
+-   id: power
+    label: power
+    dtype: float
+    default: '1.0'
+
+-   id: samp_rate
+    label: Sample Rate (Hz)
+    dtype: float
+    default: samp_rate
 #- id: ...
 #  label: ...
 #  dtype: ...
@@ -36,11 +51,9 @@ inputs:
 #  optional: ...
 
 outputs:
-#- label: ...
-#  domain: ...
-#  dtype: ...
-#  vlen: ...
-#  optional: ...
+-   domain: stream
+    dtype: complex
+    multiplicity: 1
 
 #  'file_format' specifies the version of the GRC yml format used in the file
 #  and should usually not be changed.
