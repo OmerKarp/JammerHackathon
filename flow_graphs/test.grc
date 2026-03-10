@@ -59,13 +59,13 @@ blocks:
     phase: '0'
     samp_rate: samp_rate
     showports: 'False'
-    type: complex
-    waveform: analog.GR_COS_WAVE
+    type: float
+    waveform: analog.GR_SAW_WAVE
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [80, 192.0]
+    coordinate: [40, 208.0]
     rotation: 0
     state: enabled
 - name: blocks_add_xx_0
@@ -104,7 +104,38 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [360, 216.0]
+    coordinate: [528, 216.0]
+    rotation: 0
+    state: enabled
+- name: blocks_vco_c_0
+  id: blocks_vco_c
+  parameters:
+    affinity: ''
+    alias: ''
+    amplitude: '1'
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samp_rate: samp_rate
+    sensitivity: 2*math.pi
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [288, 224.0]
+    rotation: 0
+    state: enabled
+- name: import_0
+  id: import
+  parameters:
+    alias: ''
+    comment: ''
+    imports: import math
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [200, 96.0]
     rotation: 0
     state: enabled
 - name: jammer_follwer_jammer_0
@@ -207,10 +238,11 @@ blocks:
     state: enabled
 
 connections:
-- [analog_sig_source_x_0, '0', blocks_throttle2_0, '0']
+- [analog_sig_source_x_0, '0', blocks_vco_c_0, '0']
 - [blocks_add_xx_0, '0', qtgui_freq_sink_x_0, '0']
 - [blocks_throttle2_0, '0', blocks_add_xx_0, '0']
 - [blocks_throttle2_0, '0', jammer_follwer_jammer_0, '0']
+- [blocks_vco_c_0, '0', blocks_throttle2_0, '0']
 - [jammer_follwer_jammer_0, '0', blocks_add_xx_0, '1']
 
 metadata:

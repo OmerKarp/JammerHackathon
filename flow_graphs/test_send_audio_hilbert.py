@@ -64,7 +64,7 @@ class test_send_audio_hilbert(gr.top_block, Qt.QWidget):
         ##################################################
         # Variables
         ##################################################
-        self.time = time = 1e-2
+        self.time = time = 1e-1
         self.sig_amp = sig_amp = 1
         self.samp_rate = samp_rate = int(16e3)
         self.SNR_lin = SNR_lin = 2
@@ -282,6 +282,7 @@ class test_send_audio_hilbert(gr.top_block, Qt.QWidget):
                 window.WIN_HAMMING,
                 6.76))
         self.jammer_mod_source_str2samp_0 = jammer.mod_source_str2samp(time, samp_rate, 'hello')
+        self.jammer_follwer_jammer_0 = jammer.follwer_jammer(400, 500)
         self.jammer_demod_samp2str_0 = jammer.demod_samp2str(time, samp_rate, 1, 0.1)
         self.hilbert_fc_1 = filter.hilbert_fc(6500, window.WIN_HAMMING, 6.76)
         self.blocks_vco_f_0_0 = blocks.vco_f(samp_rate, (2*math.pi*1e3), 1)
@@ -289,7 +290,6 @@ class test_send_audio_hilbert(gr.top_block, Qt.QWidget):
         self.blocks_freqshift_cc_0 = blocks.rotator_cc(2.0*math.pi*(-2e3)/samp_rate)
         self.blocks_add_xx_1_0 = blocks.add_vcc(1)
         self.blocks_add_const_vxx_1_0_0 = blocks.add_const_ff(2)
-        self.analog_noise_source_x_0_1 = analog.noise_source_c(analog.GR_GAUSSIAN, (sig_amp/SNR_lin), 0)
         self.analog_fm_demod_cf_1 = analog.fm_demod_cf(
         	channel_rate=samp_rate,
         	audio_decim=1,
@@ -307,7 +307,6 @@ class test_send_audio_hilbert(gr.top_block, Qt.QWidget):
         self.connect((self.analog_fm_demod_cf_1, 0), (self.jammer_demod_samp2str_0, 0))
         self.connect((self.analog_fm_demod_cf_1, 0), (self.qtgui_freq_sink_x_0_1_0, 0))
         self.connect((self.analog_fm_demod_cf_1, 0), (self.qtgui_time_sink_x_0_2_2, 0))
-        self.connect((self.analog_noise_source_x_0_1, 0), (self.blocks_add_xx_1_0, 1))
         self.connect((self.blocks_add_const_vxx_1_0_0, 0), (self.blocks_throttle2_1_0, 0))
         self.connect((self.blocks_add_const_vxx_1_0_0, 0), (self.qtgui_time_sink_x_0_2_1, 0))
         self.connect((self.blocks_add_xx_1_0, 0), (self.blocks_freqshift_cc_0, 0))
@@ -316,6 +315,8 @@ class test_send_audio_hilbert(gr.top_block, Qt.QWidget):
         self.connect((self.blocks_throttle2_1_0, 0), (self.blocks_vco_f_0_0, 0))
         self.connect((self.blocks_vco_f_0_0, 0), (self.low_pass_filter_0_0, 0))
         self.connect((self.hilbert_fc_1, 0), (self.blocks_add_xx_1_0, 0))
+        self.connect((self.hilbert_fc_1, 0), (self.jammer_follwer_jammer_0, 0))
+        self.connect((self.jammer_follwer_jammer_0, 0), (self.blocks_add_xx_1_0, 1))
         self.connect((self.jammer_mod_source_str2samp_0, 0), (self.blocks_add_const_vxx_1_0_0, 0))
         self.connect((self.low_pass_filter_0, 0), (self.analog_fm_demod_cf_1, 0))
         self.connect((self.low_pass_filter_0_0, 0), (self.hilbert_fc_1, 0))
@@ -340,7 +341,6 @@ class test_send_audio_hilbert(gr.top_block, Qt.QWidget):
 
     def set_sig_amp(self, sig_amp):
         self.sig_amp = sig_amp
-        self.analog_noise_source_x_0_1.set_amplitude((self.sig_amp/self.SNR_lin))
 
     def get_samp_rate(self):
         return self.samp_rate
@@ -361,7 +361,6 @@ class test_send_audio_hilbert(gr.top_block, Qt.QWidget):
 
     def set_SNR_lin(self, SNR_lin):
         self.SNR_lin = SNR_lin
-        self.analog_noise_source_x_0_1.set_amplitude((self.sig_amp/self.SNR_lin))
 
 
 
