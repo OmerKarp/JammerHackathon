@@ -37,48 +37,24 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: (start_freq+end_freq)/2
+    value: 434e6
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [544, 16.0]
-    rotation: 0
-    state: enabled
-- name: end_freq
-  id: variable
-  parameters:
-    comment: ''
-    value: 436e6
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [664, 16.0]
+    coordinate: [432, 16.0]
     rotation: 0
     state: enabled
 - name: samp_rate
   id: variable
   parameters:
     comment: ''
-    value: int(1000e3)
+    value: int(100e3)
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
     coordinate: [256, 16.0]
-    rotation: 0
-    state: enabled
-- name: start_freq
-  id: variable
-  parameters:
-    comment: ''
-    value: 431e6
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [432, 16.0]
     rotation: 0
     state: enabled
 - name: t
@@ -243,8 +219,8 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    f1: '0'
-    f2: 1e6
+    f1: '400'
+    f2: '500'
     maxoutbuf: '0'
     minoutbuf: '0'
   states:

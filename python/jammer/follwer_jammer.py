@@ -13,17 +13,19 @@ class follwer_jammer(gr.sync_block):
     """
     Detects the highest frequency peak and jams it with bandlimited noise
     """
-    def __init__(self, f1=400, f2=500):
+    def __init__(self, f1=400e3, f2=500e3):
         gr.sync_block.__init__(self,
             name="follwer_jammer",
             in_sig=[np.complex64],
             out_sig=[np.complex64])
 
+        self.f1 = f1
+        self.f2 = f2
         self.fft_size     = 1024
         self.num_buffers  = 10
-        self.samp_rate    = 3.2e3
+        self.samp_rate    = self.f2-self.f1
         self.threshold_db = 10
-        self.bandwidth    = 200
+        self.bandwidth    = 20
         self.amplitude    = 100.0
 
         self.total_samples   = self.fft_size * self.num_buffers
