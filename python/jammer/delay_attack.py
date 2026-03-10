@@ -27,16 +27,20 @@ class delay_attack(gr.sync_block):
             in_sig=[np.complex64],
             out_sig=[np.complex64])
 
+        self.delay = int(delay)
         self.buffer = np.zeros(int(delay), dtype=np.complex64)
+        self.index = 0
 
     def work(self, input_items, output_items):
         in0 = input_items[0]
         out = output_items[0]
 
-        combined = np.concatenate((self.buffer, in0))
-        
-        out[:] = combined[:len(out)]
+        for i in range(len(in0)):
+            out[i] = self.buffer[self.index]
+            self.buffer [self.index] = in0[i]
 
-        self.buffer = combined[len(out):]
+            self.index += 1
+            if self.index >= self.delay:
+                self.index = 0
 
         return len(output_items[0])

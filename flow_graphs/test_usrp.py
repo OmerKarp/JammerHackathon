@@ -66,7 +66,7 @@ class test_usrp(gr.top_block, Qt.QWidget):
         ##################################################
         # Variables
         ##################################################
-        self.t = t = 0.1
+        self.t = t = 0.05
         self.sig_amp = sig_amp = 1
         self.samp_rate = samp_rate = int(100e3)
         self.center_freq = center_freq = 434e6
@@ -77,7 +77,7 @@ class test_usrp(gr.top_block, Qt.QWidget):
         ##################################################
 
         self.uhd_usrp_source_0 = uhd.usrp_source(
-            ",".join(("", '')),
+            ",".join(('serial=34D62B0', '')),
             uhd.stream_args(
                 cpu_format="fc32",
                 args='',
@@ -91,7 +91,7 @@ class test_usrp(gr.top_block, Qt.QWidget):
         self.uhd_usrp_source_0.set_antenna("RX2", 0)
         self.uhd_usrp_source_0.set_gain(20, 0)
         self.uhd_usrp_sink_0 = uhd.usrp_sink(
-            ",".join(("", '')),
+            ",".join(('serial=34D62B0', '')),
             uhd.stream_args(
                 cpu_format="fc32",
                 args='',
