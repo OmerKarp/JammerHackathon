@@ -1,0 +1,52 @@
+id: jammer_delay_attack
+label: delay_attack
+category: '[jammer]'
+
+templates:
+  imports: from gnuradio import jammer
+  make: jammer.delay_attack(${f1}, ${f2}, ${delay})
+
+#  Make one 'parameters' list entry for every parameter you want settable from the GUI.
+#     Keys include:
+#     * id (makes the value accessible as keyname, e.g. in the make entry)
+#     * label (label shown in the GUI)
+#     * dtype (e.g. int, float, complex, byte, short, xxx_vector, ...)
+#     * default
+parameters:
+- id: f1
+  label: f1
+  dtype: float
+  default: 400
+- id: f2
+  label: f2
+  dtype: float
+  default: 500
+- id: delay
+  label: delay
+  dtype: float
+  default: 1024
+
+#  Make one 'inputs' list entry per input and one 'outputs' list entry per output.
+#  Keys include:
+#      * label (an identifier for the GUI)
+#      * domain (optional - stream or message. Default is stream)
+#      * dtype (e.g. int, float, complex, byte, short, xxx_vector, ...)
+#      * vlen (optional - data stream vector length. Default is 1)
+#      * optional (optional - set to 1 for optional inputs. Default is 0)
+inputs:
+- label: in
+#  domain: ...
+  dtype: complex
+#  vlen: ...
+#  optional: ...
+
+outputs:
+- label: out
+#  domain: ...
+  dtype: complex
+#  vlen: ...
+#  optional: ...
+
+#  'file_format' specifies the version of the GRC yml format used in the file
+#  and should usually not be changed.
+file_format: 1

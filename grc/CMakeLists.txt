@@ -10,4 +10,5 @@ install(FILES
     jammer_demod_samp2str.block.yml
     jammer_mod_source_str2samp.block.yml 
     jammer_barrage.block.yml
-    jammer_follwer_jammer.block.yml DESTINATION share/gnuradio/grc/blocks)
+    jammer_follwer_jammer.block.yml
+    jammer_delay_attack.block.yml DESTINATION share/gnuradio/grc/blocks)
