@@ -68,7 +68,7 @@ class demod_samp2str(gr.sync_block):
             max_cor = np.max(cor)
             idx_max_cor = np.argmax(cor)
 
-            if(max_cor >= 0.95*self.preamble_length):
+            if(max_cor >= 0.5*self.preamble_length):
                 print("found pre")
                 signal_start_idx = idx_max_cor + self.preamble_length
                 self.is_signal = True
@@ -111,3 +111,47 @@ class demod_samp2str(gr.sync_block):
             return msg
         else:
             return None
+
+    
+    
+    def vec2char(self,vec):
+        mat_bit = np.reshape(vec, (-1,3))
+        bit_msg = np.array([], dtype=int)
+
+        for row in mat_bit:
+            if self.is_one(row):
+                bit_msg = np.append(bit_msg, 1)
+            elif self.is_zero(row):
+                bit_msg = np.append(bit_msg, 0)
+            #else:
+                #bit_msg = np.append(bit_msg, 505)
+                #print("not found bit")
+                
+        if len(bit_msg) != 8:
+            return ''
+
+        
+        # print("hihihhi")
+        # print(bit_msg)
+        
+        bit_msg = ''.join(map(str,bit_msg))  
+        # print(bit_msg)
+        msg = (chr(int(bit_msg,2)))
+        return msg
+
+
+    def is_one(self,row):
+        symbol_1 = [1,1,-1]
+        return (symbol_1==row.tolist())
+
+        
+    def is_zero(self,row):
+        symbol_0 = [1,-1,-1]
+        return (symbol_0==row.tolist())
+
+
+    def is_signal_end(self,sig):
+        if(np.count_nonzero(sig==0)>=self.timeout*self.fs):
+            return True
+        else:
+            return False

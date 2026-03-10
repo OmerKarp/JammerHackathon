@@ -23,5 +23,6 @@ except ModuleNotFoundError:
 from .demod_samp2str import demod_samp2str
 from .mod_source_str2samp import mod_source_str2samp
 from .barrage import barrage
+from .follwer_jammer import follwer_jammer
 
 #
