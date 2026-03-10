@@ -22,4 +22,6 @@ except ModuleNotFoundError:
 # import any pure python here
 from .demod_samp2str import demod_samp2str
 from .mod_source_str2samp import mod_source_str2samp
+from .barrage import barrage
+
 #

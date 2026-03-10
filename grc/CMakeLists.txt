@@ -8,4 +8,6 @@
 
 install(FILES
     jammer_demod_samp2str.block.yml
-    jammer_mod_source_str2samp.block.yml DESTINATION share/gnuradio/grc/blocks)
+    jammer_mod_source_str2samp.block.yml 
+    jammer_barrage.block.yml
+    DESTINATION share/gnuradio/grc/blocks)
