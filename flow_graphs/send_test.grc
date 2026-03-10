@@ -181,8 +181,8 @@ blocks:
     coordinate: [160, 104.0]
     rotation: 0
     state: enabled
-- name: info_with_audio_mod_source_str2samp_0_0_0
-  id: info_with_audio_mod_source_str2samp
+- name: jammer_mod_source_str2samp_0
+  id: jammer_mod_source_str2samp
   parameters:
     affinity: ''
     alias: ''
@@ -190,13 +190,13 @@ blocks:
     fs: samp_rate
     maxoutbuf: '0'
     minoutbuf: '0'
-    msg: hello world
+    msg: hello
     t: t
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [72, 216.0]
+    coordinate: [80, 200.0]
     rotation: 0
     state: enabled
 - name: low_pass_filter_0_0
@@ -634,7 +634,7 @@ connections:
 - [blocks_throttle2_1_0, '0', blocks_vco_f_0_0, '0']
 - [blocks_vco_f_0_0, '0', low_pass_filter_0_0, '0']
 - [hilbert_fc_1, '0', uhd_usrp_sink_0, '0']
-- [info_with_audio_mod_source_str2samp_0_0_0, '0', blocks_add_const_vxx_1_0_0, '0']
+- [jammer_mod_source_str2samp_0, '0', blocks_add_const_vxx_1_0_0, '0']
 - [low_pass_filter_0_0, '0', hilbert_fc_1, '0']
 
 metadata:
