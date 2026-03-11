@@ -42,7 +42,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [544, 16.0]
+    coordinate: [528, 16.0]
     rotation: 0
     state: enabled
 - name: end_freq
@@ -54,7 +54,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [664, 16.0]
+    coordinate: [632, 16.0]
     rotation: 0
     state: enabled
 - name: samp_rate
@@ -112,7 +112,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [656, 460.0]
+    coordinate: [664, 652.0]
     rotation: 0
     state: disabled
 - name: blocks_add_const_vxx_1_0_0_0
@@ -147,7 +147,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [304, 504.0]
+    coordinate: [312, 696.0]
     rotation: 0
     state: disabled
 - name: blocks_throttle2_1_0_0
@@ -234,7 +234,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [840, 488.0]
+    coordinate: [848, 680.0]
     rotation: 0
     state: disabled
 - name: jammer_follwer_jammer_0
@@ -251,7 +251,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [440, 192.0]
+    coordinate: [400, 352.0]
     rotation: 0
     state: enabled
 - name: jammer_mod_source_str2samp_0_0
@@ -293,7 +293,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [480, 460.0]
+    coordinate: [488, 652.0]
     rotation: 0
     state: disabled
 - name: low_pass_filter_0_0_0
@@ -378,7 +378,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [416, 328.0]
+    coordinate: [384, 528.0]
     rotation: 0
     state: enabled
 - name: qtgui_waterfall_sink_x_0_0_1
@@ -439,7 +439,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [696, 320.0]
+    coordinate: [568, 504.0]
     rotation: 0
     state: enabled
 - name: qtgui_waterfall_sink_x_0_0_1_0
@@ -500,7 +500,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [648, 624.0]
+    coordinate: [656, 816.0]
     rotation: 0
     state: disabled
 - name: uhd_usrp_sink_0_1
@@ -614,7 +614,7 @@ blocks:
     clock_source6: ''
     clock_source7: ''
     comment: ''
-    dev_addr: serial=34D62B0
+    dev_addr: '""'
     dev_args: ''
     gain0: '20'
     gain1: '0'
@@ -777,7 +777,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1072, 128.0]
+    coordinate: [1072, 136.0]
     rotation: 0
     state: disabled
 - name: uhd_usrp_sink_0_1_0
@@ -1054,7 +1054,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [712, 168.0]
+    coordinate: [632, 312.0]
     rotation: 0
     state: enabled
 - name: uhd_usrp_source_0
@@ -1232,7 +1232,7 @@ blocks:
     dc_offs_enb7: default
     dc_offs_enb8: default
     dc_offs_enb9: default
-    dev_addr: serial=34D62B0
+    dev_addr: '""'
     dev_args: ''
     gain0: '20'
     gain1: '0'
@@ -1490,7 +1490,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [32, 476.0]
+    coordinate: [40, 680.0]
     rotation: 0
     state: disabled
 - name: uhd_usrp_source_0_0
@@ -1926,7 +1926,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [128, 184.0]
+    coordinate: [112, 336.0]
     rotation: 0
     state: enabled
 
