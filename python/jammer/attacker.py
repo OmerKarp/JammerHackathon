@@ -57,7 +57,7 @@ class attacker(gr.sync_block):
         # ----- follow jammer information -----
         self.fft_size     = 1024
         self.num_buffers  = 10
-        self.samp_rate    = 3.2e3
+        self.samp_rate    = self.freq_end-self.freq_start
         self.threshold_db = 10
         self.bandwidth    = 200
         self.amplitude    = 100.0
