@@ -28,7 +28,16 @@ class mod_source_str2samp(gr.sync_block):
         self.preamble_value = 1
         self.one_bit = np.concatenate((np.ones(round(2*t*fs)), -1 * np.ones(round(t*fs))))
         self.zero_bit = np.concatenate((np.ones(round(t*fs)), -1 * np.ones(round(2*t*fs))))
-        self.samples_queue = deque([self.preamble_value]*self.preamble_length + self.enqueue_from_string(msg, fs, t).tolist())
+        #self.samples_queue = deque([self.preamble_value]*self.preamble_length + self.enqueue_from_string(msg, fs, t).tolist())
+
+
+                # Barker-11 stretched to sample_per_pulse samples per chip
+        barker11 = np.array([1, 1, 1, -1, -1, -1, 1, -1, -1, 1, -1], dtype=np.float32)
+        self.preamble = np.repeat(barker11, round(fs * t))  # each chip = one pulse width
+
+        self.samples_queue = deque(
+            self.preamble.tolist() + self.enqueue_from_string(msg, fs, t).tolist()
+        )
 
     def work(self, input_items, output_items):
         out = output_items[0]

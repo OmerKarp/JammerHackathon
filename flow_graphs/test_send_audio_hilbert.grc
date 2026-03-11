@@ -294,7 +294,7 @@ blocks:
     bus_structure: null
     coordinate: [968, 304.0]
     rotation: 0
-    state: enabled
+    state: bypassed
 - name: jammer_mod_source_str2samp_0
   id: jammer_mod_source_str2samp
   parameters:

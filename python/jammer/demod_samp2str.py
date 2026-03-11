@@ -36,6 +36,10 @@ class demod_samp2str(gr.sync_block):
         self.remainder = np.array([])
         self.number_of_noisy_bits = 0
 
+        barker11 = np.array([1, 1, 1, -1, -1, -1, 1, -1, -1, 1, -1], dtype=np.float32)
+        self.preamble_template = np.repeat(barker11, self.sample_per_pulse)
+        self.preamble_length = len(self.preamble_template)
+
     def work(self, input_items, output_items):
         in0 = input_items[0]
 
@@ -60,8 +64,8 @@ class demod_samp2str(gr.sync_block):
                 self.remainder = full_data
                 return None
         
-            preamble_cor = self.preamble_value*np.ones(self.preamble_length)
-            cor = np.correlate(full_data, preamble_cor, "valid")
+    
+            cor = np.correlate(full_data, self.preamble_template , "valid")
 
             peaks,_ = find_peaks(cor, distance=self.samples_per_symble,height=threshold )
 

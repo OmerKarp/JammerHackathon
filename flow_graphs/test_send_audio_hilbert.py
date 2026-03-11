@@ -282,7 +282,6 @@ class test_send_audio_hilbert(gr.top_block, Qt.QWidget):
                 window.WIN_HAMMING,
                 6.76))
         self.jammer_mod_source_str2samp_0 = jammer.mod_source_str2samp(time, samp_rate, 'hel')
-        self.jammer_follwer_jammer_0 = jammer.follwer_jammer(400e3, 500e3)
         self.jammer_demod_samp2str_0 = jammer.demod_samp2str(time, samp_rate, 1, 0.2)
         self.hilbert_fc_1 = filter.hilbert_fc(6500, window.WIN_HAMMING, 6.76)
         self.blocks_vco_f_0_0 = blocks.vco_f(samp_rate, (2*math.pi*1e3), 1)
@@ -315,8 +314,7 @@ class test_send_audio_hilbert(gr.top_block, Qt.QWidget):
         self.connect((self.blocks_throttle2_1_0, 0), (self.blocks_vco_f_0_0, 0))
         self.connect((self.blocks_vco_f_0_0, 0), (self.low_pass_filter_0_0, 0))
         self.connect((self.hilbert_fc_1, 0), (self.blocks_add_xx_0, 0))
-        self.connect((self.hilbert_fc_1, 0), (self.jammer_follwer_jammer_0, 0))
-        self.connect((self.jammer_follwer_jammer_0, 0), (self.blocks_add_xx_0, 1))
+        self.connect((self.hilbert_fc_1, 0), (self.blocks_add_xx_0, 1))
         self.connect((self.jammer_mod_source_str2samp_0, 0), (self.blocks_add_const_vxx_1_0_0, 0))
         self.connect((self.low_pass_filter_0, 0), (self.analog_fm_demod_cf_1, 0))
         self.connect((self.low_pass_filter_0_0, 0), (self.hilbert_fc_1, 0))
