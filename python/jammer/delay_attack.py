@@ -14,12 +14,8 @@ from gnuradio import gr
 
 class delay_attack(gr.sync_block):
     """
-    Delays the input signal by a fixed number of samples using a circular buffer.
-
-    Example (delay=3):
-        Input  call 1: [A B C D E]
-        Output call 1: [0 0 0 A B]
-        Output call 2: [C D E ...]
+    Replay attack: records incoming signal, then retransmits it
+    after a random delay (set once at start).
     """
     def __init__(self, f1=400, f2=400, delay=0.001, sample_rate=1e6):
         gr.sync_block.__init__(self,
@@ -27,8 +23,14 @@ class delay_attack(gr.sync_block):
             in_sig=[np.complex64],
             out_sig=[np.complex64])
 
-        self.delay_samples = int(delay * sample_rate)
-        # Pre-fill buffer with zeros (the initial delay)
+        self.sample_rate = sample_rate
+
+        # Random delay set ONCE at init, not every call
+        rand_delay = delay + np.random.rand() * 2  # delay + 0 to 2 seconds random
+        self.delay_samples = int(rand_delay * sample_rate)
+        print(f"Replay delay: {rand_delay:.3f}s = {self.delay_samples} samples")
+
+        # Pre-fill buffer with zeros (initial silence)
         self.buffer = np.zeros(self.delay_samples, dtype=np.complex64)
 
     def work(self, input_items, output_items):
@@ -44,7 +46,7 @@ class delay_attack(gr.sync_block):
         # Prepend saved buffer to incoming samples
         combined = np.concatenate([self.buffer, in0])
 
-        # Output is the oldest N samples (the delayed ones)
+        # Output is the oldest N samples (the delayed/replayed ones)
         out[:] = combined[:N]
 
         # Save the last delay_samples for next call

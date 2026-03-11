@@ -282,7 +282,7 @@ class gersgy_sim(gr.top_block, Qt.QWidget):
                 6.76))
         self.jammer_mod_source_str2samp_0 = jammer.mod_source_str2samp(time, samp_rate, 'hello')
         self.jammer_demod_samp2str_0 = jammer.demod_samp2str(time, samp_rate, 1, 0.2)
-        self.jammer_delay_attack_0 = jammer.delay_attack(400, 500, 10, samp_rate/2)
+        self.jammer_delay_attack_0 = jammer.delay_attack(400, 500, 0.5, samp_rate/2)
         self.hilbert_fc_1 = filter.hilbert_fc(6500, window.WIN_HAMMING, 6.76)
         self.blocks_vco_f_0_0 = blocks.vco_f(samp_rate, (2*math.pi*1e3), 1)
         self.blocks_throttle2_1_0 = blocks.throttle( gr.sizeof_float*1, samp_rate, True, 0 if "auto" == "auto" else max( int(float(0.1) * samp_rate) if "auto" == "time" else int(0.1), 1) )

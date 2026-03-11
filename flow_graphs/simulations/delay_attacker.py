@@ -65,17 +65,17 @@ class delay_attacker(gr.top_block, Qt.QWidget):
         # Variables
         ##################################################
         self.t = t = 0.05
-        self.samp_rate = samp_rate = int(50e3)
+        self.samp_rate = samp_rate = int(100e3)
         self.center_freq = center_freq = 434e6
         self.Tx_gain = Tx_gain = 20
         self.Rx_gain = Rx_gain = 20
-        self.Attacker_gain = Attacker_gain = 20
+        self.Attacker_gain = Attacker_gain = 30
 
         ##################################################
         # Blocks
         ##################################################
 
-        self._Attacker_gain_range = qtgui.Range(0, 50, 1, 20, 200)
+        self._Attacker_gain_range = qtgui.Range(0, 50, 1, 30, 200)
         self._Attacker_gain_win = qtgui.RangeWidget(self._Attacker_gain_range, self.set_Attacker_gain, "'Attacker_gain'", "counter_slider", float, QtCore.Qt.Horizontal)
         self.top_layout.addWidget(self._Attacker_gain_win)
         self.uhd_usrp_source_0_0 = uhd.usrp_source(
@@ -177,7 +177,7 @@ class delay_attacker(gr.top_block, Qt.QWidget):
         self._qtgui_waterfall_sink_x_0_0_0_win = sip.wrapinstance(self.qtgui_waterfall_sink_x_0_0_0.qwidget(), Qt.QWidget)
 
         self.top_layout.addWidget(self._qtgui_waterfall_sink_x_0_0_0_win)
-        self.jammer_delay_attack_0 = jammer.delay_attack(400, 500, 10, samp_rate)
+        self.jammer_delay_attack_0 = jammer.delay_attack(400, 500, 2, samp_rate)
         self._Tx_gain_range = qtgui.Range(0, 50, 1, 20, 200)
         self._Tx_gain_win = qtgui.RangeWidget(self._Tx_gain_range, self.set_Tx_gain, "'Tx_gain'", "counter_slider", float, QtCore.Qt.Horizontal)
         self.top_layout.addWidget(self._Tx_gain_win)

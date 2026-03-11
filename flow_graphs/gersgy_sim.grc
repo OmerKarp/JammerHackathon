@@ -232,7 +232,7 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    delay: '10'
+    delay: '0.5'
     f1: '400'
     f2: '500'
     maxoutbuf: '0'
@@ -242,7 +242,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1128, 320.0]
+    coordinate: [1128, 352.0]
     rotation: 0
     state: enabled
 - name: jammer_demod_samp2str_0

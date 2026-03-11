@@ -83,7 +83,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [728, 168.0]
+    coordinate: [824, 240.0]
     rotation: 0
     state: enabled
 - name: blocks_throttle2_0

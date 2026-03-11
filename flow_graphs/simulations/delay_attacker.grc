@@ -112,7 +112,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: int(50e3)
+    value: int(100e3)
   states:
     bus_sink: false
     bus_source: false
@@ -151,7 +151,7 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    delay: '10'
+    delay: '2'
     f1: '400'
     f2: '500'
     maxoutbuf: '0'
