@@ -87,6 +87,7 @@ class follwer_jammer(gr.sync_block):
 
     def bandlimited_noise(self, center_freq, num_samples):
         # Complex white noise
+        print(f"(+) center freq = {center_freq}, num_samples = {num_samples}")
         noise = (np.random.normal(0, self.amplitude, num_samples) +
                  1j * np.random.normal(0, self.amplitude, num_samples)).astype(np.complex64)
 

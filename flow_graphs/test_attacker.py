@@ -29,7 +29,7 @@ import sip
 
 
 
-class test_send_audio_hilbert(gr.top_block, Qt.QWidget):
+class test_attacker(gr.top_block, Qt.QWidget):
 
     def __init__(self):
         gr.top_block.__init__(self, "Not titled yet", catch_exceptions=True)
@@ -52,7 +52,7 @@ class test_send_audio_hilbert(gr.top_block, Qt.QWidget):
         self.top_grid_layout = Qt.QGridLayout()
         self.top_layout.addLayout(self.top_grid_layout)
 
-        self.settings = Qt.QSettings("GNU Radio", "test_send_audio_hilbert")
+        self.settings = Qt.QSettings("GNU Radio", "test_attacker")
 
         try:
             geometry = self.settings.value("geometry")
@@ -66,7 +66,7 @@ class test_send_audio_hilbert(gr.top_block, Qt.QWidget):
         ##################################################
         self.time = time = 0.01
         self.sig_amp = sig_amp = 1
-        self.samp_rate = samp_rate = int(100e3)
+        self.samp_rate = samp_rate = int(1000e3)
         self.SNR_lin = SNR_lin = 2
 
         ##################################################
@@ -282,8 +282,8 @@ class test_send_audio_hilbert(gr.top_block, Qt.QWidget):
                 window.WIN_HAMMING,
                 6.76))
         self.jammer_mod_source_str2samp_0 = jammer.mod_source_str2samp(time, samp_rate, 'hello')
-        self.jammer_follwer_jammer_0 = jammer.follwer_jammer(400e3, 500e3)
         self.jammer_demod_samp2str_0 = jammer.demod_samp2str(time, samp_rate, 1, 0.2)
+        self.jammer_attacker_0 = jammer.attacker('Follow', 400e3, 500e3, samp_rate, time, 10000, 1, 1, "j")
         self.hilbert_fc_1 = filter.hilbert_fc(6500, window.WIN_HAMMING, 6.76)
         self.blocks_vco_f_0_0 = blocks.vco_f(samp_rate, (2*math.pi*1e3), 1)
         self.blocks_throttle2_1_0 = blocks.throttle( gr.sizeof_float*1, samp_rate, True, 0 if "auto" == "auto" else max( int(float(0.1) * samp_rate) if "auto" == "time" else int(0.1), 1) )
@@ -315,15 +315,15 @@ class test_send_audio_hilbert(gr.top_block, Qt.QWidget):
         self.connect((self.blocks_throttle2_1_0, 0), (self.blocks_vco_f_0_0, 0))
         self.connect((self.blocks_vco_f_0_0, 0), (self.low_pass_filter_0_0, 0))
         self.connect((self.hilbert_fc_1, 0), (self.blocks_add_xx_0, 0))
-        self.connect((self.hilbert_fc_1, 0), (self.jammer_follwer_jammer_0, 0))
-        self.connect((self.jammer_follwer_jammer_0, 0), (self.blocks_add_xx_0, 1))
+        self.connect((self.hilbert_fc_1, 0), (self.jammer_attacker_0, 0))
+        self.connect((self.jammer_attacker_0, 0), (self.blocks_add_xx_0, 1))
         self.connect((self.jammer_mod_source_str2samp_0, 0), (self.blocks_add_const_vxx_1_0_0, 0))
         self.connect((self.low_pass_filter_0, 0), (self.analog_fm_demod_cf_1, 0))
         self.connect((self.low_pass_filter_0_0, 0), (self.hilbert_fc_1, 0))
 
 
     def closeEvent(self, event):
-        self.settings = Qt.QSettings("GNU Radio", "test_send_audio_hilbert")
+        self.settings = Qt.QSettings("GNU Radio", "test_attacker")
         self.settings.setValue("geometry", self.saveGeometry())
         self.stop()
         self.wait()
@@ -365,7 +365,7 @@ class test_send_audio_hilbert(gr.top_block, Qt.QWidget):
 
 
 
-def main(top_block_cls=test_send_audio_hilbert, options=None):
+def main(top_block_cls=test_attacker, options=None):
 
     qapp = Qt.QApplication(sys.argv)
 

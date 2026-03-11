@@ -11,7 +11,7 @@ options:
     gen_linking: dynamic
     generate_options: qt_gui
     hier_block_src_path: '.:'
-    id: test_send_audio_hilbert
+    id: test_attacker
     max_nouts: '0'
     output_language: python
     placement: (0,0)
@@ -42,19 +42,19 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [448, 40.0]
+    coordinate: [520, 32.0]
     rotation: 0
     state: enabled
 - name: samp_rate
   id: variable
   parameters:
     comment: ''
-    value: int(100e3)
+    value: int(1000e3)
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [232, 40.0]
+    coordinate: [304, 32.0]
     rotation: 0
     state: enabled
 - name: sig_amp
@@ -66,7 +66,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [552, 40.0]
+    coordinate: [624, 32.0]
     rotation: 0
     state: enabled
 - name: time
@@ -78,7 +78,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [352, 40.0]
+    coordinate: [424, 32.0]
     rotation: 0
     state: enabled
 - name: analog_fm_demod_cf_1
@@ -100,7 +100,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1600, 28.0]
+    coordinate: [1672, 20.0]
     rotation: 0
     state: enabled
 - name: blocks_add_const_vxx_1_0_0
@@ -118,7 +118,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [208, 240.0]
+    coordinate: [280, 232.0]
     rotation: 0
     state: enabled
 - name: blocks_add_xx_0
@@ -136,7 +136,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1120, 192.0]
+    coordinate: [1192, 184.0]
     rotation: 0
     state: enabled
 - name: blocks_freqshift_cc_0
@@ -153,7 +153,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1192, 96.0]
+    coordinate: [1264, 88.0]
     rotation: 0
     state: enabled
 - name: blocks_throttle2_1_0
@@ -174,7 +174,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [360, 224.0]
+    coordinate: [432, 216.0]
     rotation: 0
     state: enabled
 - name: blocks_vco_f_0_0
@@ -192,7 +192,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [544, 216.0]
+    coordinate: [616, 208.0]
     rotation: 0
     state: enabled
 - name: hilbert_fc_1
@@ -210,7 +210,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [952, 160.0]
+    coordinate: [1024, 152.0]
     rotation: 0
     state: enabled
 - name: import_0
@@ -223,44 +223,33 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [56, 128.0]
+    coordinate: [128, 120.0]
     rotation: 0
     state: enabled
-- name: info_with_audio_demod_samp2str_1
-  id: info_with_audio_demod_samp2str
+- name: jammer_attacker_0
+  id: jammer_attacker
   parameters:
     affinity: ''
     alias: ''
+    attack_type: Follow
+    attacker_gain: '1'
     comment: ''
-    fs: samp_rate
-    t: time
-    timeout: '3'
-    voltage: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1888, 32.0]
-    rotation: 0
-    state: disabled
-- name: info_with_audio_mod_source_str2samp_0_0_0
-  id: info_with_audio_mod_source_str2samp
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
+    fc: '10000'
+    freq_end: 500e3
+    freq_start: 400e3
     fs: samp_rate
     maxoutbuf: '0'
     minoutbuf: '0'
-    msg: hello
+    msg: '"j"'
     t: time
+    timeout: '1'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [40, 312.0]
+    coordinate: [984, 268.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: jammer_demod_samp2str_0
   id: jammer_demod_samp2str
   parameters:
@@ -275,24 +264,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1888, 72.0]
-    rotation: 0
-    state: enabled
-- name: jammer_follwer_jammer_0
-  id: jammer_follwer_jammer
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    f1: 400e3
-    f2: 500e3
-    maxoutbuf: '0'
-    minoutbuf: '0'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [968, 304.0]
+    coordinate: [1960, 64.0]
     rotation: 0
     state: enabled
 - name: jammer_mod_source_str2samp_0
@@ -310,7 +282,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [56, 344.0]
+    coordinate: [80, 216.0]
     rotation: 0
     state: enabled
 - name: low_pass_filter_0
@@ -334,7 +306,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1392, 28.0]
+    coordinate: [1464, 20.0]
     rotation: 0
     state: enabled
 - name: low_pass_filter_0_0
@@ -358,7 +330,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [744, 108.0]
+    coordinate: [816, 100.0]
     rotation: 0
     state: enabled
 - name: qtgui_freq_sink_x_0_1_0
@@ -439,7 +411,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1840, 216.0]
+    coordinate: [1912, 208.0]
     rotation: 0
     state: enabled
 - name: qtgui_time_sink_x_0_2_0
@@ -536,7 +508,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1200, 304.0]
+    coordinate: [1264, 328.0]
     rotation: 0
     state: enabled
 - name: qtgui_time_sink_x_0_2_1
@@ -633,7 +605,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [328, 400.0]
+    coordinate: [400, 392.0]
     rotation: 0
     state: enabled
 - name: qtgui_time_sink_x_0_2_2
@@ -730,12 +702,11 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1728, 344.0]
+    coordinate: [1800, 336.0]
     rotation: 0
     state: enabled
 
 connections:
-- [analog_fm_demod_cf_1, '0', info_with_audio_demod_samp2str_1, '0']
 - [analog_fm_demod_cf_1, '0', jammer_demod_samp2str_0, '0']
 - [analog_fm_demod_cf_1, '0', qtgui_freq_sink_x_0_1_0, '0']
 - [analog_fm_demod_cf_1, '0', qtgui_time_sink_x_0_2_2, '0']
@@ -747,9 +718,8 @@ connections:
 - [blocks_throttle2_1_0, '0', blocks_vco_f_0_0, '0']
 - [blocks_vco_f_0_0, '0', low_pass_filter_0_0, '0']
 - [hilbert_fc_1, '0', blocks_add_xx_0, '0']
-- [hilbert_fc_1, '0', jammer_follwer_jammer_0, '0']
-- [info_with_audio_mod_source_str2samp_0_0_0, '0', blocks_add_const_vxx_1_0_0, '0']
-- [jammer_follwer_jammer_0, '0', blocks_add_xx_0, '1']
+- [hilbert_fc_1, '0', jammer_attacker_0, '0']
+- [jammer_attacker_0, '0', blocks_add_xx_0, '1']
 - [jammer_mod_source_str2samp_0, '0', blocks_add_const_vxx_1_0_0, '0']
 - [low_pass_filter_0, '0', analog_fm_demod_cf_1, '0']
 - [low_pass_filter_0_0, '0', hilbert_fc_1, '0']

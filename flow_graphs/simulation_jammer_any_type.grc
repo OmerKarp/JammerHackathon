@@ -196,6 +196,25 @@ blocks:
     coordinate: [160, 24.0]
     rotation: 0
     state: enabled
+- name: jammer_barrage_0
+  id: jammer_barrage
+  parameters:
+    Power: '1.0'
+    affinity: ''
+    alias: ''
+    comment: ''
+    end_freq: 20e3
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samp_rate: samp_rate
+    start_freq: -20e3
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [432, 136.0]
+    rotation: 0
+    state: enabled
 - name: jammer_demod_samp2str_0
   id: jammer_demod_samp2str
   parameters:
@@ -219,17 +238,17 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    f1: '400'
-    f2: '500'
+    f1: 400e3
+    f2: 500e3
     maxoutbuf: '0'
     minoutbuf: '0'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [440, 192.0]
+    coordinate: [440, 112.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: jammer_mod_source_str2samp_0_0
   id: jammer_mod_source_str2samp
   parameters:
@@ -869,7 +888,7 @@ blocks:
     comment: ''
     dev_addr: '""'
     dev_args: ''
-    gain0: '20'
+    gain0: '50'
     gain1: '0'
     gain10: '0'
     gain11: '0'
@@ -1913,6 +1932,8 @@ connections:
 - [blocks_throttle2_1_0_0, '0', blocks_vco_f_0_0_0, '0']
 - [blocks_vco_f_0_0_0, '0', low_pass_filter_0_0_0, '0']
 - [hilbert_fc_1_0, '0', uhd_usrp_sink_0_1, '0']
+- [jammer_barrage_0, '0', qtgui_waterfall_sink_x_0_0_1, '0']
+- [jammer_barrage_0, '0', uhd_usrp_sink_0_1_0, '0']
 - [jammer_follwer_jammer_0, '0', qtgui_waterfall_sink_x_0_0_1, '0']
 - [jammer_follwer_jammer_0, '0', uhd_usrp_sink_0_1_0, '0']
 - [jammer_mod_source_str2samp_0_0, '0', blocks_add_const_vxx_1_0_0_0, '0']

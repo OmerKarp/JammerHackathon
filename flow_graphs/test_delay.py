@@ -27,7 +27,7 @@ import sip
 
 
 
-class jamming_simulation(gr.top_block, Qt.QWidget):
+class test_delay(gr.top_block, Qt.QWidget):
 
     def __init__(self):
         gr.top_block.__init__(self, "Not titled yet", catch_exceptions=True)
@@ -50,7 +50,7 @@ class jamming_simulation(gr.top_block, Qt.QWidget):
         self.top_grid_layout = Qt.QGridLayout()
         self.top_layout.addLayout(self.top_grid_layout)
 
-        self.settings = Qt.QSettings("GNU Radio", "jamming_simulation")
+        self.settings = Qt.QSettings("GNU Radio", "test_delay")
 
         try:
             geometry = self.settings.value("geometry")
@@ -63,7 +63,7 @@ class jamming_simulation(gr.top_block, Qt.QWidget):
         # Variables
         ##################################################
         self.t = t = 0.1
-        self.samp_rate = samp_rate = int(100e3)
+        self.samp_rate = samp_rate = int(50e3)
         self.center_freq = center_freq = 434e6
 
         ##################################################
@@ -103,7 +103,7 @@ class jamming_simulation(gr.top_block, Qt.QWidget):
             1024, #size
             window.WIN_BLACKMAN_hARRIS, #wintype
             0, #fc
-            (samp_rate/10), #bw
+            samp_rate, #bw
             "jammer signal", #name
             1, #number of inputs
             None # parent
@@ -138,7 +138,7 @@ class jamming_simulation(gr.top_block, Qt.QWidget):
             1024, #size
             window.WIN_BLACKMAN_hARRIS, #wintype
             0, #fc
-            (samp_rate/10), #bw
+            samp_rate, #bw
             "before jamming", #name
             1, #number of inputs
             None # parent
@@ -169,19 +169,20 @@ class jamming_simulation(gr.top_block, Qt.QWidget):
         self._qtgui_waterfall_sink_x_0_0_0_win = sip.wrapinstance(self.qtgui_waterfall_sink_x_0_0_0.qwidget(), Qt.QWidget)
 
         self.top_layout.addWidget(self._qtgui_waterfall_sink_x_0_0_0_win)
-        self.jammer_barrage_0 = jammer.barrage(-20e3, 20e3, 1.0, samp_rate)
+        self.jammer_delay_attack_0 = jammer.delay_attack(400, 500, 5.46545, samp_rate)
 
 
         ##################################################
         # Connections
         ##################################################
-        self.connect((self.jammer_barrage_0, 0), (self.qtgui_waterfall_sink_x_0_0_1, 0))
-        self.connect((self.jammer_barrage_0, 0), (self.uhd_usrp_sink_0_1_0, 0))
+        self.connect((self.jammer_delay_attack_0, 0), (self.qtgui_waterfall_sink_x_0_0_1, 0))
+        self.connect((self.jammer_delay_attack_0, 0), (self.uhd_usrp_sink_0_1_0, 0))
+        self.connect((self.uhd_usrp_source_0_0, 0), (self.jammer_delay_attack_0, 0))
         self.connect((self.uhd_usrp_source_0_0, 0), (self.qtgui_waterfall_sink_x_0_0_0, 0))
 
 
     def closeEvent(self, event):
-        self.settings = Qt.QSettings("GNU Radio", "jamming_simulation")
+        self.settings = Qt.QSettings("GNU Radio", "test_delay")
         self.settings.setValue("geometry", self.saveGeometry())
         self.stop()
         self.wait()
@@ -199,8 +200,8 @@ class jamming_simulation(gr.top_block, Qt.QWidget):
 
     def set_samp_rate(self, samp_rate):
         self.samp_rate = samp_rate
-        self.qtgui_waterfall_sink_x_0_0_0.set_frequency_range(0, (self.samp_rate/10))
-        self.qtgui_waterfall_sink_x_0_0_1.set_frequency_range(0, (self.samp_rate/10))
+        self.qtgui_waterfall_sink_x_0_0_0.set_frequency_range(0, self.samp_rate)
+        self.qtgui_waterfall_sink_x_0_0_1.set_frequency_range(0, self.samp_rate)
         self.uhd_usrp_sink_0_1_0.set_samp_rate(self.samp_rate)
         self.uhd_usrp_source_0_0.set_samp_rate(self.samp_rate)
 
@@ -215,7 +216,7 @@ class jamming_simulation(gr.top_block, Qt.QWidget):
 
 
 
-def main(top_block_cls=jamming_simulation, options=None):
+def main(top_block_cls=test_delay, options=None):
 
     qapp = Qt.QApplication(sys.argv)
 

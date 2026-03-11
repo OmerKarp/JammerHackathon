@@ -74,7 +74,7 @@ class attacker(gr.sync_block):
         self.preamble = np.repeat(barker11, self.preamble_length)  # each chip = one pulse width
 
         self.samples_queue = deque()
-        self.add_msg_to_queue()
+        # self.add_msg_to_queue()
 
         self.gui_attack_console()
 
@@ -325,57 +325,70 @@ class attacker(gr.sync_block):
         return n
 
     def Follow_attack(self, in0, out):
-        n = len(in0)
+        try:
+            # --- Accumulate samples into pre-allocated buffer ---
+            space_left = self.total_samples - self.sample_count
+            to_copy    = min(len(in0), space_left)
+            self.accumulated[self.sample_count:self.sample_count + to_copy] = in0[:to_copy]
+            self.sample_count += to_copy
+            print("(1)")
 
-        # Accumulate input samples
-        space_left = self.total_samples - self.sample_count
-        to_copy    = min(n, space_left)
-        self.accumulated[self.sample_count:self.sample_count + to_copy] = in0[:to_copy]
-        self.sample_count += to_copy
+            # --- If we have a known jam freq, output noise while accumulating ---
+            if self.jam_freq is not None:
+                out[:] = self.bandlimited_noise(
+                    center_freq=self.jam_freq,
+                    num_samples=len(in0)
+                )
+            else:
+                out[:] = 0
+            print("(2)")
+            # --- Not enough samples yet ---
+            if self.sample_count < self.total_samples:
+                return len(in0)
 
-        # Output jam noise on known frequency while accumulating
-        if self.jam_freq is not None:
-            out[:] = self._follow_bandlimited_noise(self.jam_freq, n)
-        else:
-            out[:] = np.zeros(n, dtype=np.complex64)
+            # --- Enough samples: run FFT ---
+            window     = np.blackman(self.total_samples)
+            fft_result = np.fft.fftshift(np.fft.fft(self.accumulated * window))
+            power_db   = 20 * np.log10(np.abs(fft_result) + 1e-12)
+            freqs      = np.fft.fftshift(np.fft.fftfreq(self.total_samples, 1.0 / self.samp_rate))
 
-        # Not enough samples yet
-        if self.sample_count < self.total_samples:
-            return n
+            # --- Find highest peak above threshold ---
+            mean_db      = np.mean(power_db)
+            peak_indices = np.where(power_db > (mean_db + self.threshold_db))[0]
+            print("(3)")
+            if len(peak_indices) > 0:
+                highest_idx    = peak_indices[np.argmax(power_db[peak_indices])]
+                self.jam_freq  = freqs[highest_idx]
+                print(f"Jamming {self.jam_freq/1e3:.3f} KHz | "
+                        f"{power_db[highest_idx]:.2f} dB | "
+                        f"{power_db[highest_idx] - mean_db:.2f} dB above mean")
+            else:
+                print("No peaks found above threshold")
+                self.jam_freq = None
+            print("(4)")
+            # --- Reset accumulation ---
+            self.sample_count = 0
 
-        # Enough samples: run FFT and find peak
-        win        = np.blackman(self.total_samples)
-        fft_result = np.fft.fftshift(np.fft.fft(self.accumulated * win))
-        power_db   = 20 * np.log10(np.abs(fft_result) + 1e-12)
-        freqs      = np.fft.fftshift(np.fft.fftfreq(self.total_samples, 1.0 / self.fs))
+        except Exception as e:
+            print(f"Error in work: {e}")
 
-        mean_db      = np.mean(power_db)
-        peak_indices = np.where(power_db > (mean_db + self.threshold_db))[0]
+        return len(in0)
 
-        if len(peak_indices) > 0:
-            highest_idx  = peak_indices[np.argmax(power_db[peak_indices])]
-            self.jam_freq = freqs[highest_idx]
-            print(f"[Follow] Jamming {self.jam_freq/1e3:.3f} kHz | "
-                  f"{power_db[highest_idx]:.1f} dB | "
-                  f"{power_db[highest_idx] - mean_db:.1f} dB above mean")
-        else:
-            self.jam_freq = None
+    def bandlimited_noise(self, center_freq, num_samples):
+        # Complex white noise
+        print(f"(+) center freq = {center_freq}, num_samples = {num_samples}")
+        noise = (np.random.normal(0, self.amplitude, num_samples) +
+                 1j * np.random.normal(0, self.amplitude, num_samples)).astype(np.complex64)
 
-        self.sample_count = 0
-        return n
-
-    def _follow_bandlimited_noise(self, center_freq, num_samples):
-        noise = (
-            np.random.normal(0, self.amplitude, num_samples) +
-            1j * np.random.normal(0, self.amplitude, num_samples)
-        ).astype(np.complex64)
-
-        cutoff = np.clip((self.bandwidth / 2) / (self.fs / 2), 0.01, 0.99)
+        # Lowpass filter to shape bandwidth (around DC first)
+        cutoff = np.clip((self.bandwidth / 2) / (self.samp_rate / 2), 0.01, 0.99)
         taps   = firwin(101, cutoff)
         noise  = lfilter(taps, 1.0, noise).astype(np.complex64)
 
-        t      = np.arange(num_samples) / self.fs
+        # Upconvert to center_freq
+        t      = np.arange(num_samples) / self.samp_rate
         noise *= np.exp(1j * 2 * np.pi * center_freq * t).astype(np.complex64)
+
         return noise
 
     def Spoof_attack(self, in0, out):
@@ -411,7 +424,7 @@ class attacker(gr.sync_block):
         return samples
     
     def add_msg_to_queue(self):
-        noise = self._follow_bandlimited_noise(self.fc, 2 * self.timeout * self.fs).tolist()
+        noise    = self.bandlimited_noise(self.fc, int(2 * self.timeout * self.fs)).tolist()
         preamble = self.preamble.tolist()
-        msg = self.enqueue_from_string(self.msg, self.fs, self.t).tolist() 
+        msg      = self.enqueue_from_string(self.msg, self.fs, self.t).tolist()
         self.samples_queue.extend(noise + preamble + msg)
