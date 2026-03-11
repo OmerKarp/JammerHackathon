@@ -37,12 +37,16 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: (start_freq+end_freq)/2
+    value: 434e6
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
+<<<<<<< Updated upstream
     coordinate: [544, 16.0]
+=======
+    coordinate: [440, 16.0]
+>>>>>>> Stashed changes
     rotation: 0
     state: enabled
 - name: end_freq
@@ -54,14 +58,18 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
+<<<<<<< Updated upstream
     coordinate: [664, 16.0]
+=======
+    coordinate: [728, 16.0]
+>>>>>>> Stashed changes
     rotation: 0
     state: enabled
 - name: samp_rate
   id: variable
   parameters:
     comment: ''
-    value: int(1000e3)
+    value: int(100e3)
   states:
     bus_sink: false
     bus_source: false
@@ -78,14 +86,14 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [432, 16.0]
+    coordinate: [808, 16.0]
     rotation: 0
     state: enabled
 - name: t
   id: variable
   parameters:
     comment: ''
-    value: '0.1'
+    value: '0.01'
   states:
     bus_sink: false
     bus_source: false
@@ -114,7 +122,7 @@ blocks:
     bus_structure: null
     coordinate: [656, 460.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: blocks_add_const_vxx_1_0_0_0
   id: blocks_add_const_vxx
   parameters:
@@ -132,7 +140,7 @@ blocks:
     bus_structure: null
     coordinate: [216, 184.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: blocks_freqshift_cc_0
   id: blocks_freqshift_cc
   parameters:
@@ -149,7 +157,7 @@ blocks:
     bus_structure: null
     coordinate: [304, 504.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: blocks_throttle2_1_0_0
   id: blocks_throttle2
   parameters:
@@ -170,7 +178,7 @@ blocks:
     bus_structure: null
     coordinate: [352, 176.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: blocks_vco_f_0_0_0
   id: blocks_vco_f
   parameters:
@@ -188,7 +196,7 @@ blocks:
     bus_structure: null
     coordinate: [520, 168.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: hilbert_fc_1_0
   id: hilbert_fc
   parameters:
@@ -206,7 +214,7 @@ blocks:
     bus_structure: null
     coordinate: [880, 184.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: import_0
   id: import
   parameters:
@@ -236,7 +244,7 @@ blocks:
     bus_structure: null
     coordinate: [840, 488.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: jammer_follwer_jammer_0
   id: jammer_follwer_jammer
   parameters:
@@ -253,7 +261,7 @@ blocks:
     bus_structure: null
     coordinate: [464, 200.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: jammer_mod_source_str2samp_0_0
   id: jammer_mod_source_str2samp
   parameters:
@@ -263,7 +271,7 @@ blocks:
     fs: samp_rate
     maxoutbuf: '0'
     minoutbuf: '0'
-    msg: h
+    msg: hello hello hellow
     t: t
   states:
     bus_sink: false
@@ -271,7 +279,7 @@ blocks:
     bus_structure: null
     coordinate: [24, 168.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: low_pass_filter_0
   id: low_pass_filter
   parameters:
@@ -295,7 +303,7 @@ blocks:
     bus_structure: null
     coordinate: [480, 460.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: low_pass_filter_0_0_0
   id: low_pass_filter
   parameters:
@@ -319,7 +327,7 @@ blocks:
     bus_structure: null
     coordinate: [704, 132.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: qtgui_waterfall_sink_x_0_0_0
   id: qtgui_waterfall_sink_x
   parameters:
@@ -378,9 +386,13 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
+<<<<<<< Updated upstream
     coordinate: [416, 328.0]
+=======
+    coordinate: [368, 512.0]
+>>>>>>> Stashed changes
     rotation: 0
-    state: enabled
+    state: disabled
 - name: qtgui_waterfall_sink_x_0_0_1
   id: qtgui_waterfall_sink_x
   parameters:
@@ -441,7 +453,7 @@ blocks:
     bus_structure: null
     coordinate: [696, 320.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: qtgui_waterfall_sink_x_0_0_1_0
   id: qtgui_waterfall_sink_x
   parameters:
@@ -471,7 +483,7 @@ blocks:
     color9: '0'
     comment: ''
     fc: '0'
-    fftsize: '1024'
+    fftsize: '2048'
     freqhalf: 'True'
     grid: 'False'
     gui_hint: ''
@@ -502,7 +514,7 @@ blocks:
     bus_structure: null
     coordinate: [648, 624.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: uhd_usrp_sink_0_1
   id: uhd_usrp_sink
   parameters:
@@ -616,7 +628,7 @@ blocks:
     comment: ''
     dev_addr: serial=34D62B0
     dev_args: ''
-    gain0: '20'
+    gain0: '10'
     gain1: '0'
     gain10: '0'
     gain11: '0'
@@ -779,7 +791,7 @@ blocks:
     bus_structure: null
     coordinate: [1072, 128.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: uhd_usrp_sink_0_1_0
   id: uhd_usrp_sink
   parameters:
@@ -1056,7 +1068,7 @@ blocks:
     bus_structure: null
     coordinate: [712, 168.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: uhd_usrp_source_0
   id: uhd_usrp_source
   parameters:
@@ -1492,7 +1504,7 @@ blocks:
     bus_structure: null
     coordinate: [32, 476.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: uhd_usrp_source_0_0
   id: uhd_usrp_source
   parameters:
@@ -1928,7 +1940,7 @@ blocks:
     bus_structure: null
     coordinate: [128, 184.0]
     rotation: 0
-    state: enabled
+    state: disabled
 
 connections:
 - [analog_fm_demod_cf_1, '0', jammer_demod_samp2str_0, '0']

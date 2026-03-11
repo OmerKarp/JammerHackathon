@@ -19,7 +19,7 @@ class attacker(gr.sync_block):
     """
     docstring for block attacker
     """
-    def __init__(self, attack_type,freq_start,freq_end,fs,t,fc,attacker_gain):
+    def __init__(self, attack_type,freq_start,freq_end,fs,t,fc,attacker_gain,timeout):
         gr.sync_block.__init__(self,
             name="attacker",
             in_sig=[np.complex64],
@@ -36,6 +36,7 @@ class attacker(gr.sync_block):
         self.t = t
         self.fc = fc
         self.attacker_gain = attacker_gain
+        self.timeout = timeout
 
         # ----- barrage information -----
         # Validate inputs
@@ -281,6 +282,7 @@ class attacker(gr.sync_block):
             return self.Spoof_attack(in0,out)
 
         print("No such attack exist!")
+        out[:] = np.zeros(np.size(out))
         return len(output_items[0])
 
     def Barrage_attack(self, out):
@@ -367,4 +369,7 @@ class attacker(gr.sync_block):
 
     def Spoof_attack(self, in0, out):
         out[:] = np.zeros(len(out), dtype=np.complex64)
+        noise = self._follow_bandlimited_noise(self.fc, 2 * self.timeout * self.fs)
+
+        payload = np.concatenate((noise, msg))
         return len(out)

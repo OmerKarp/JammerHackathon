@@ -4,7 +4,7 @@ category: '[jammer]'
 
 templates:
   imports: from gnuradio import jammer
-  make: jammer.attacker(${attack_type}, ${freq_start}, ${freq_end}, ${fs}, ${t}, ${fc}, ${attacker_gain})
+  make: jammer.attacker(${attack_type}, ${freq_start}, ${freq_end}, ${fs}, ${t}, ${fc}, ${attacker_gain}, ${timeout})
 
 #  Make one 'parameters' list entry for every parameter you want settable from the GUI.
 #     Keys include:
@@ -33,7 +33,10 @@ parameters:
   dtype: float
 - id: attacker_gain
   label: attacker_gain
-  dtype: float 
+  dtype: float
+- id: timeout
+  label: timeout
+  dtype: float
 
 #  Make one 'inputs' list entry per input and one 'outputs' list entry per output.
 #  Keys include:
