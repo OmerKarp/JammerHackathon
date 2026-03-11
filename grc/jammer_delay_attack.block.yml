@@ -4,7 +4,7 @@ category: '[jammer]'
 
 templates:
   imports: from gnuradio import jammer
-  make: jammer.delay_attack(${f1}, ${f2}, ${delay})
+  make: jammer.delay_attack(${f1}, ${f2}, ${delay}, ${sample_rate})
 
 #  Make one 'parameters' list entry for every parameter you want settable from the GUI.
 #     Keys include:
@@ -22,9 +22,13 @@ parameters:
   dtype: float
   default: 500
 - id: delay
-  label: delay
+  label: Delay (s)
   dtype: float
-  default: 1024
+  default: 0.001
+- id: sample_rate
+  label: Sample Rate
+  dtype: float
+  default: samp_rate
 
 #  Make one 'inputs' list entry per input and one 'outputs' list entry per output.
 #  Keys include:
