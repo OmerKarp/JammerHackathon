@@ -14,12 +14,13 @@ from gnuradio import gr
 from gnuradio.filter import firdes
 from gnuradio.fft import window
 from scipy.signal import firwin, lfilter
+from collections import deque
 
 class attacker(gr.sync_block):
     """
     docstring for block attacker
     """
-    def __init__(self, attack_type,freq_start,freq_end,fs,t,fc,attacker_gain,timeout):
+    def __init__(self, attack_type,freq_start,freq_end,fs,t,fc,attacker_gain,timeout,msg):
         gr.sync_block.__init__(self,
             name="attacker",
             in_sig=[np.complex64],
@@ -37,6 +38,7 @@ class attacker(gr.sync_block):
         self.fc = fc
         self.attacker_gain = attacker_gain
         self.timeout = timeout
+        self.msg = msg
 
         # ----- barrage information -----
         # Validate inputs
@@ -64,6 +66,15 @@ class attacker(gr.sync_block):
         self.accumulated     = np.zeros(self.total_samples, dtype=np.complex64)
         self.sample_count    = 0
         self.jam_freq        = None  # last detected peak frequency
+
+        self.preamble_length = round(fs*t*1)
+        self.one_bit = np.concatenate((np.ones(round(2*t*fs)), -1 * np.ones(round(t*fs))))
+        self.zero_bit = np.concatenate((np.ones(round(t*fs)), -1 * np.ones(round(2*t*fs))))
+        barker11 = np.array([1, 1, 1, -1, -1, -1, 1, -1, -1, 1, -1], dtype=np.float32)
+        self.preamble = np.repeat(barker11, self.preamble_length)  # each chip = one pulse width
+
+        self.samples_queue = deque()
+        self.add_msg_to_queue()
 
         self.gui_attack_console()
 
@@ -368,8 +379,39 @@ class attacker(gr.sync_block):
         return noise
 
     def Spoof_attack(self, in0, out):
-        out[:] = np.zeros(len(out), dtype=np.complex64)
-        noise = self._follow_bandlimited_noise(self.fc, 2 * self.timeout * self.fs)
+        out_len = len(out[:])
 
-        payload = np.concatenate((noise, msg))
+        for i in range(out_len):
+            if len(self.samples_queue) > 0:
+                out[i] = self.samples_queue.popleft()
+            else:
+                out[i] = 0
+        
         return len(out)
+    
+    def symbol_1(self,fs,t):
+        symbol = self.one_bit
+        return symbol
+
+    def symbol_0(self,fs, t):
+        symbol = self.zero_bit
+        return symbol
+
+    def enqueue_from_string(self,msg, fs, t):
+        list_bits = ''.join(format(ord(char), '08b') for char in msg)
+        samples = np.array([])
+
+        for bit in list_bits:
+            if bit=='1':
+                samples = np.append(samples,self.symbol_1(fs,t))
+
+            else:
+                samples = np.append(samples,self.symbol_0(fs,t))    
+
+        return samples
+    
+    def add_msg_to_queue(self):
+        noise = self._follow_bandlimited_noise(self.fc, 2 * self.timeout * self.fs).tolist()
+        preamble = self.preamble.tolist()
+        msg = self.enqueue_from_string(self.msg, self.fs, self.t).tolist() 
+        self.samples_queue.extend(noise + preamble + msg)
