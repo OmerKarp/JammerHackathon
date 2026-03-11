@@ -25,15 +25,14 @@ class mod_source_str2samp(gr.sync_block):
         self.fs = fs
         self.msg = msg
         self.preamble_length = round(fs*t*1)
-        self.preamble_value = 1
+        self.counter = 0
         self.one_bit = np.concatenate((np.ones(round(2*t*fs)), -1 * np.ones(round(t*fs))))
         self.zero_bit = np.concatenate((np.ones(round(t*fs)), -1 * np.ones(round(2*t*fs))))
-        #self.samples_queue = deque([self.preamble_value]*self.preamble_length + self.enqueue_from_string(msg, fs, t).tolist())
+        self.waiting_period = 0.5
 
-
-                # Barker-11 stretched to sample_per_pulse samples per chip
+        # Barker-11 stretched to sample_per_pulse samples per chip
         barker11 = np.array([1, 1, 1, -1, -1, -1, 1, -1, -1, 1, -1], dtype=np.float32)
-        self.preamble = np.repeat(barker11, round(fs * t))  # each chip = one pulse width
+        self.preamble = np.repeat(barker11, self.preamble_length)  # each chip = one pulse width
 
         self.samples_queue = deque(
             self.preamble.tolist() + self.enqueue_from_string(msg, fs, t).tolist()
@@ -43,15 +42,21 @@ class mod_source_str2samp(gr.sync_block):
         out = output_items[0]
 
         out_len = len(out[:])
-        #print(out_len)
+
         for i in range(out_len):
-            try:
+            if len(self.samples_queue) > 0:
                 out[i] = self.samples_queue.popleft()
-            except:
+            else:
                 out[i] = 0
+                self.counter += 1
+                if self.counter > (self.fs * self.waiting_period):
+                    self.counter = 0
+                    self.add_msg_to_queue()
 
         return len(output_items[0])
-
+    
+    def add_msg_to_queue(self):
+        self.samples_queue.extend(self.preamble.tolist() + self.enqueue_from_string(self.msg, self.fs, self.t).tolist())
 
     def symbol_1(self,fs,t):
         symbol = self.one_bit

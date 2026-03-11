@@ -304,7 +304,7 @@ blocks:
     fs: samp_rate
     maxoutbuf: '0'
     minoutbuf: '0'
-    msg: hel
+    msg: hello
     t: time
   states:
     bus_sink: false
