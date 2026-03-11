@@ -25,5 +25,7 @@ from .mod_source_str2samp import mod_source_str2samp
 from .barrage import barrage
 from .follwer_jammer import follwer_jammer
 from .delay_attack import delay_attack
+from .attacker import attacker
+
 
 #
