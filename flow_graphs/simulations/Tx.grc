@@ -45,7 +45,7 @@ blocks:
     start: '0'
     step: '1'
     stop: '50'
-    value: '20'
+    value: '30'
     widget: counter_slider
   states:
     bus_sink: false
@@ -189,27 +189,6 @@ blocks:
     coordinate: [360, 744.0]
     rotation: 0
     state: disabled
-- name: blocks_throttle2_1_0
-  id: blocks_throttle2
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    ignoretag: 'True'
-    limit: auto
-    maximum: '0.1'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    samples_per_second: samp_rate
-    type: float
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [400, 208.0]
-    rotation: 0
-    state: enabled
 - name: blocks_vco_f_0_0
   id: blocks_vco_f
   parameters:
@@ -292,7 +271,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [912, 728.0]
+    coordinate: [904, 736.0]
     rotation: 0
     state: disabled
 - name: jammer_mod_source_str2samp_0
@@ -358,7 +337,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [752, 160.0]
+    coordinate: [752, 164.0]
     rotation: 0
     state: enabled
 - name: qtgui_sink_x_0
@@ -1092,7 +1071,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [768, 392.0]
+    coordinate: [776, 392.0]
     rotation: 0
     state: disabled
 - name: uhd_usrp_source_0
@@ -1528,7 +1507,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [96, 712.0]
+    coordinate: [96, 728.0]
     rotation: 0
     state: disabled
 - name: uhd_usrp_source_0_0
@@ -1971,10 +1950,9 @@ blocks:
 connections:
 - [analog_fm_demod_cf_1, '0', jammer_demod_samp2str_0, '0']
 - [analog_fm_demod_cf_1, '0', qtgui_sink_x_0_0, '0']
-- [blocks_add_const_vxx_1_0_0, '0', blocks_throttle2_1_0, '0']
+- [blocks_add_const_vxx_1_0_0, '0', blocks_vco_f_0_0, '0']
 - [blocks_add_const_vxx_1_0_0, '0', qtgui_sink_x_0, '0']
 - [blocks_freqshift_cc_0, '0', low_pass_filter_0, '0']
-- [blocks_throttle2_1_0, '0', blocks_vco_f_0_0, '0']
 - [blocks_vco_f_0_0, '0', low_pass_filter_0_0, '0']
 - [hilbert_fc_1, '0', uhd_usrp_sink_0, '0']
 - [jammer_barrage_0, '0', qtgui_waterfall_sink_x_0_0_1, '0']

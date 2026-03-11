@@ -45,7 +45,7 @@ blocks:
     start: '0'
     step: '1'
     stop: '50'
-    value: '20'
+    value: '30'
     widget: counter_slider
   states:
     bus_sink: false
@@ -106,6 +106,27 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [424, 8.0]
+    rotation: 0
+    state: disabled
+- name: center_freq
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: ''
+    label: ''
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: 433.990e6
+    step: 1e3
+    stop: 434.01e6
+    value: 434e6
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [848, 8.0]
     rotation: 0
     state: enabled
 - name: samp_rate
@@ -171,7 +192,7 @@ blocks:
     bus_structure: null
     coordinate: [240, 216.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: blocks_freqshift_cc_0
   id: blocks_freqshift_cc
   parameters:
@@ -189,27 +210,6 @@ blocks:
     coordinate: [360, 744.0]
     rotation: 0
     state: enabled
-- name: blocks_throttle2_1_0
-  id: blocks_throttle2
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    ignoretag: 'True'
-    limit: auto
-    maximum: '0.1'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    samples_per_second: samp_rate
-    type: float
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [400, 208.0]
-    rotation: 0
-    state: disabled
 - name: blocks_vco_f_0_0
   id: blocks_vco_f
   parameters:
@@ -227,7 +227,7 @@ blocks:
     bus_structure: null
     coordinate: [560, 200.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: hilbert_fc_1
   id: hilbert_fc
   parameters:
@@ -245,7 +245,7 @@ blocks:
     bus_structure: null
     coordinate: [928, 216.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: import_0
   id: import
   parameters:
@@ -312,7 +312,7 @@ blocks:
     bus_structure: null
     coordinate: [48, 200.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: low_pass_filter_0
   id: low_pass_filter
   parameters:
@@ -360,7 +360,7 @@ blocks:
     bus_structure: null
     coordinate: [752, 164.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: qtgui_sink_x_0
   id: qtgui_sink_x
   parameters:
@@ -390,33 +390,65 @@ blocks:
     coordinate: [360, 88.0]
     rotation: 0
     state: disabled
-- name: qtgui_sink_x_0_0
-  id: qtgui_sink_x
+- name: qtgui_waterfall_sink_x_0
+  id: qtgui_waterfall_sink_x
   parameters:
     affinity: ''
     alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    axislabels: 'True'
     bw: samp_rate
+    color1: '0'
+    color10: '0'
+    color2: '0'
+    color3: '0'
+    color4: '0'
+    color5: '0'
+    color6: '0'
+    color7: '0'
+    color8: '0'
+    color9: '0'
     comment: ''
     fc: '0'
     fftsize: '4096'
+    freqhalf: 'True'
+    grid: 'False'
     gui_hint: ''
+    int_max: '10'
+    int_min: '-140'
+    label1: ''
+    label10: ''
+    label2: ''
+    label3: ''
+    label4: ''
+    label5: ''
+    label6: ''
+    label7: ''
+    label8: ''
+    label9: ''
+    legend: 'True'
     maxoutbuf: '0'
     minoutbuf: '0'
-    name: '"Rx"'
-    plotconst: 'True'
-    plotfreq: 'True'
-    plottime: 'True'
-    plotwaterfall: 'True'
-    rate: '10'
+    name: '"Tx"'
+    nconnections: '1'
     showports: 'False'
-    showrf: 'False'
-    type: float
+    type: complex
+    update_time: '0.10'
     wintype: window.WIN_BLACKMAN_hARRIS
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [896, 848.0]
+    coordinate: [528, 872.0]
     rotation: 0
     state: enabled
 - name: qtgui_waterfall_sink_x_0_0_0
@@ -817,7 +849,7 @@ blocks:
     bus_structure: null
     coordinate: [1120, 168.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: uhd_usrp_sink_0_1_0_0
   id: uhd_usrp_sink
   parameters:
@@ -1528,7 +1560,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [96, 712.0]
+    coordinate: [96, 728.0]
     rotation: 0
     state: enabled
 - name: uhd_usrp_source_0_0
@@ -1970,11 +2002,10 @@ blocks:
 
 connections:
 - [analog_fm_demod_cf_1, '0', jammer_demod_samp2str_0, '0']
-- [analog_fm_demod_cf_1, '0', qtgui_sink_x_0_0, '0']
-- [blocks_add_const_vxx_1_0_0, '0', blocks_throttle2_1_0, '0']
+- [blocks_add_const_vxx_1_0_0, '0', blocks_vco_f_0_0, '0']
 - [blocks_add_const_vxx_1_0_0, '0', qtgui_sink_x_0, '0']
 - [blocks_freqshift_cc_0, '0', low_pass_filter_0, '0']
-- [blocks_throttle2_1_0, '0', blocks_vco_f_0_0, '0']
+- [blocks_freqshift_cc_0, '0', qtgui_waterfall_sink_x_0, '0']
 - [blocks_vco_f_0_0, '0', low_pass_filter_0_0, '0']
 - [hilbert_fc_1, '0', uhd_usrp_sink_0, '0']
 - [jammer_barrage_0, '0', qtgui_waterfall_sink_x_0_0_1, '0']
