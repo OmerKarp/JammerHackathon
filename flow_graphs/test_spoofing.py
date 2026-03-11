@@ -6,6 +6,7 @@
 #
 # GNU Radio Python Flow Graph
 # Title: Not titled yet
+# Author: sdr
 # GNU Radio version: 3.10.9.2
 
 from PyQt5 import Qt
@@ -28,7 +29,7 @@ import sip
 
 
 
-class gersgy_sim(gr.top_block, Qt.QWidget):
+class test_spoofing(gr.top_block, Qt.QWidget):
 
     def __init__(self):
         gr.top_block.__init__(self, "Not titled yet", catch_exceptions=True)
@@ -51,7 +52,7 @@ class gersgy_sim(gr.top_block, Qt.QWidget):
         self.top_grid_layout = Qt.QGridLayout()
         self.top_layout.addLayout(self.top_grid_layout)
 
-        self.settings = Qt.QSettings("GNU Radio", "gersgy_sim")
+        self.settings = Qt.QSettings("GNU Radio", "test_spoofing")
 
         try:
             geometry = self.settings.value("geometry")
@@ -63,9 +64,9 @@ class gersgy_sim(gr.top_block, Qt.QWidget):
         ##################################################
         # Variables
         ##################################################
-        self.time = time = 0.05
+        self.time = time = 0.5
         self.sig_amp = sig_amp = 1
-        self.samp_rate = samp_rate = int(16e3)
+        self.samp_rate = samp_rate = int(100e3)
         self.SNR_lin = SNR_lin = 2
 
         ##################################################
@@ -120,54 +121,6 @@ class gersgy_sim(gr.top_block, Qt.QWidget):
 
         self._qtgui_time_sink_x_0_2_2_win = sip.wrapinstance(self.qtgui_time_sink_x_0_2_2.qwidget(), Qt.QWidget)
         self.top_layout.addWidget(self._qtgui_time_sink_x_0_2_2_win)
-        self.qtgui_time_sink_x_0_2_1 = qtgui.time_sink_f(
-            1024, #size
-            samp_rate, #samp_rate
-            "The bits message", #name
-            1, #number of inputs
-            None # parent
-        )
-        self.qtgui_time_sink_x_0_2_1.set_update_time(0.10)
-        self.qtgui_time_sink_x_0_2_1.set_y_axis(-5, 5)
-
-        self.qtgui_time_sink_x_0_2_1.set_y_label('Amplitude', "")
-
-        self.qtgui_time_sink_x_0_2_1.enable_tags(True)
-        self.qtgui_time_sink_x_0_2_1.set_trigger_mode(qtgui.TRIG_MODE_FREE, qtgui.TRIG_SLOPE_POS, 0.0, 0, 0, "")
-        self.qtgui_time_sink_x_0_2_1.enable_autoscale(False)
-        self.qtgui_time_sink_x_0_2_1.enable_grid(False)
-        self.qtgui_time_sink_x_0_2_1.enable_axis_labels(True)
-        self.qtgui_time_sink_x_0_2_1.enable_control_panel(False)
-        self.qtgui_time_sink_x_0_2_1.enable_stem_plot(False)
-
-
-        labels = ['Signal 1', 'Signal 2', 'Signal 3', 'Signal 4', 'Signal 5',
-            'Signal 6', 'Signal 7', 'Signal 8', 'Signal 9', 'Signal 10']
-        widths = [1, 1, 1, 1, 1,
-            1, 1, 1, 1, 1]
-        colors = ['green', 'red', 'green', 'black', 'cyan',
-            'magenta', 'yellow', 'dark red', 'dark green', 'dark blue']
-        alphas = [1.0, 1.0, 1.0, 1.0, 1.0,
-            1.0, 1.0, 1.0, 1.0, 1.0]
-        styles = [1, 1, 1, 1, 1,
-            1, 1, 1, 1, 1]
-        markers = [0, -1, -1, -1, -1,
-            -1, -1, -1, -1, -1]
-
-
-        for i in range(1):
-            if len(labels[i]) == 0:
-                self.qtgui_time_sink_x_0_2_1.set_line_label(i, "Data {0}".format(i))
-            else:
-                self.qtgui_time_sink_x_0_2_1.set_line_label(i, labels[i])
-            self.qtgui_time_sink_x_0_2_1.set_line_width(i, widths[i])
-            self.qtgui_time_sink_x_0_2_1.set_line_color(i, colors[i])
-            self.qtgui_time_sink_x_0_2_1.set_line_style(i, styles[i])
-            self.qtgui_time_sink_x_0_2_1.set_line_marker(i, markers[i])
-            self.qtgui_time_sink_x_0_2_1.set_line_alpha(i, alphas[i])
-
-        self._qtgui_time_sink_x_0_2_1_win = sip.wrapinstance(self.qtgui_time_sink_x_0_2_1.qwidget(), Qt.QWidget)
-        self.top_layout.addWidget(self._qtgui_time_sink_x_0_2_1_win)
         self.qtgui_time_sink_x_0_2_0 = qtgui.time_sink_c(
             1024, #size
             samp_rate, #samp_rate
@@ -262,6 +215,15 @@ class gersgy_sim(gr.top_block, Qt.QWidget):
 
         self._qtgui_freq_sink_x_0_1_0_win = sip.wrapinstance(self.qtgui_freq_sink_x_0_1_0.qwidget(), Qt.QWidget)
         self.top_layout.addWidget(self._qtgui_freq_sink_x_0_1_0_win)
+        self.low_pass_filter_0_0_0 = filter.interp_fir_filter_fff(
+            1,
+            firdes.low_pass(
+                1,
+                samp_rate,
+                5e3,
+                1e3,
+                window.WIN_HAMMING,
+                6.76))
         self.low_pass_filter_0_0 = filter.interp_fir_filter_fff(
             1,
             firdes.low_pass(
@@ -280,14 +242,18 @@ class gersgy_sim(gr.top_block, Qt.QWidget):
                 1e3,
                 window.WIN_HAMMING,
                 6.76))
+        self.jammer_spoofing_attack_0 = jammer.spoofing_attack(time, samp_rate, 'hello', 0.2)
         self.jammer_mod_source_str2samp_0 = jammer.mod_source_str2samp(time, samp_rate, 'hello')
         self.jammer_demod_samp2str_0 = jammer.demod_samp2str(time, samp_rate, 1, 0.2)
-        self.jammer_delay_attack_0 = jammer.delay_attack(400, 500, 10, samp_rate/2)
+        self.hilbert_fc_1_0 = filter.hilbert_fc(6500, window.WIN_HAMMING, 6.76)
         self.hilbert_fc_1 = filter.hilbert_fc(6500, window.WIN_HAMMING, 6.76)
+        self.blocks_vco_f_0_0_0 = blocks.vco_f(samp_rate, (2*math.pi*1e3), 1)
         self.blocks_vco_f_0_0 = blocks.vco_f(samp_rate, (2*math.pi*1e3), 1)
+        self.blocks_throttle2_1_0_0 = blocks.throttle( gr.sizeof_float*1, samp_rate, True, 0 if "auto" == "auto" else max( int(float(0.1) * samp_rate) if "auto" == "time" else int(0.1), 1) )
         self.blocks_throttle2_1_0 = blocks.throttle( gr.sizeof_float*1, samp_rate, True, 0 if "auto" == "auto" else max( int(float(0.1) * samp_rate) if "auto" == "time" else int(0.1), 1) )
         self.blocks_freqshift_cc_0 = blocks.rotator_cc(2.0*math.pi*(-2e3)/samp_rate)
         self.blocks_add_xx_0 = blocks.add_vcc(1)
+        self.blocks_add_const_vxx_1_0_0_0 = blocks.add_const_ff(2)
         self.blocks_add_const_vxx_1_0_0 = blocks.add_const_ff(2)
         self.analog_fm_demod_cf_1 = analog.fm_demod_cf(
         	channel_rate=samp_rate,
@@ -307,22 +273,25 @@ class gersgy_sim(gr.top_block, Qt.QWidget):
         self.connect((self.analog_fm_demod_cf_1, 0), (self.qtgui_freq_sink_x_0_1_0, 0))
         self.connect((self.analog_fm_demod_cf_1, 0), (self.qtgui_time_sink_x_0_2_2, 0))
         self.connect((self.blocks_add_const_vxx_1_0_0, 0), (self.blocks_throttle2_1_0, 0))
-        self.connect((self.blocks_add_const_vxx_1_0_0, 0), (self.qtgui_time_sink_x_0_2_1, 0))
+        self.connect((self.blocks_add_const_vxx_1_0_0_0, 0), (self.blocks_throttle2_1_0_0, 0))
         self.connect((self.blocks_add_xx_0, 0), (self.blocks_freqshift_cc_0, 0))
         self.connect((self.blocks_add_xx_0, 0), (self.qtgui_time_sink_x_0_2_0, 0))
         self.connect((self.blocks_freqshift_cc_0, 0), (self.low_pass_filter_0, 0))
         self.connect((self.blocks_throttle2_1_0, 0), (self.blocks_vco_f_0_0, 0))
+        self.connect((self.blocks_throttle2_1_0_0, 0), (self.blocks_vco_f_0_0_0, 0))
         self.connect((self.blocks_vco_f_0_0, 0), (self.low_pass_filter_0_0, 0))
+        self.connect((self.blocks_vco_f_0_0_0, 0), (self.low_pass_filter_0_0_0, 0))
         self.connect((self.hilbert_fc_1, 0), (self.blocks_add_xx_0, 0))
-        self.connect((self.hilbert_fc_1, 0), (self.jammer_delay_attack_0, 0))
-        self.connect((self.jammer_delay_attack_0, 0), (self.blocks_add_xx_0, 1))
+        self.connect((self.hilbert_fc_1_0, 0), (self.blocks_add_xx_0, 1))
         self.connect((self.jammer_mod_source_str2samp_0, 0), (self.blocks_add_const_vxx_1_0_0, 0))
+        self.connect((self.jammer_spoofing_attack_0, 0), (self.blocks_add_const_vxx_1_0_0_0, 0))
         self.connect((self.low_pass_filter_0, 0), (self.analog_fm_demod_cf_1, 0))
         self.connect((self.low_pass_filter_0_0, 0), (self.hilbert_fc_1, 0))
+        self.connect((self.low_pass_filter_0_0_0, 0), (self.hilbert_fc_1_0, 0))
 
 
     def closeEvent(self, event):
-        self.settings = Qt.QSettings("GNU Radio", "gersgy_sim")
+        self.settings = Qt.QSettings("GNU Radio", "test_spoofing")
         self.settings.setValue("geometry", self.saveGeometry())
         self.stop()
         self.wait()
@@ -348,11 +317,12 @@ class gersgy_sim(gr.top_block, Qt.QWidget):
         self.samp_rate = samp_rate
         self.blocks_freqshift_cc_0.set_phase_inc(2.0*math.pi*(-2e3)/self.samp_rate)
         self.blocks_throttle2_1_0.set_sample_rate(self.samp_rate)
+        self.blocks_throttle2_1_0_0.set_sample_rate(self.samp_rate)
         self.low_pass_filter_0.set_taps(firdes.low_pass(1, self.samp_rate, 3e3, 1e3, window.WIN_HAMMING, 6.76))
         self.low_pass_filter_0_0.set_taps(firdes.low_pass(1, self.samp_rate, 5e3, 1e3, window.WIN_HAMMING, 6.76))
+        self.low_pass_filter_0_0_0.set_taps(firdes.low_pass(1, self.samp_rate, 5e3, 1e3, window.WIN_HAMMING, 6.76))
         self.qtgui_freq_sink_x_0_1_0.set_frequency_range(0, self.samp_rate)
         self.qtgui_time_sink_x_0_2_0.set_samp_rate(self.samp_rate)
-        self.qtgui_time_sink_x_0_2_1.set_samp_rate(self.samp_rate)
         self.qtgui_time_sink_x_0_2_2.set_samp_rate(self.samp_rate)
 
     def get_SNR_lin(self):
@@ -364,7 +334,7 @@ class gersgy_sim(gr.top_block, Qt.QWidget):
 
 
 
-def main(top_block_cls=gersgy_sim, options=None):
+def main(top_block_cls=test_spoofing, options=None):
 
     qapp = Qt.QApplication(sys.argv)
 

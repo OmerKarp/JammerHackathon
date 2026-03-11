@@ -11,4 +11,5 @@ install(FILES
     jammer_barrage.block.yml
     jammer_follwer_jammer.block.yml
     jammer_delay_attack.block.yml
-    jammer_attacker.block.yml DESTINATION share/gnuradio/grc/blocks)
+    jammer_attacker.block.yml
+    jammer_spoofing_attack.block.yml DESTINATION share/gnuradio/grc/blocks)

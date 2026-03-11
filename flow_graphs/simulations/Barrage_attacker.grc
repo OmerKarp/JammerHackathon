@@ -45,7 +45,7 @@ blocks:
     start: '0'
     step: '1'
     stop: '50'
-    value: '20'
+    value: '30'
     widget: counter_slider
   states:
     bus_sink: false
@@ -275,7 +275,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [488, 384.0]
+    coordinate: [496, 304.0]
     rotation: 0
     state: enabled
 - name: jammer_demod_samp2str_0

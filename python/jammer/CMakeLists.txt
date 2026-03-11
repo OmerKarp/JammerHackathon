@@ -19,7 +19,7 @@ add_subdirectory(bindings)
 ########################################################################
 # Install python sources
 ########################################################################
-gr_python_install(FILES __init__.py mod_source_str2samp.py demod_samp2str.py barrage.py follwer_jammer.py delay_attack.py attacker.py DESTINATION ${GR_PYTHON_DIR}/gnuradio/jammer)
+gr_python_install(FILES __init__.py mod_source_str2samp.py demod_samp2str.py barrage.py follwer_jammer.py delay_attack.py attacker.py spoofing_attack.py DESTINATION ${GR_PYTHON_DIR}/gnuradio/jammer)
 
 ########################################################################
 # Handle the unit tests

@@ -70,9 +70,9 @@ class follwer_jammer(gr.sync_block):
             if len(peak_indices) > 0:
                 highest_idx    = peak_indices[np.argmax(power_db[peak_indices])]
                 self.jam_freq  = freqs[highest_idx]
-                print(f"Jamming {self.jam_freq/1e3:.3f} KHz | "
-                      f"{power_db[highest_idx]:.2f} dB | "
-                      f"{power_db[highest_idx] - mean_db:.2f} dB above mean")
+                # print(f"Jamming {self.jam_freq/1e3:.3f} KHz | "
+                #       f"{power_db[highest_idx]:.2f} dB | "
+                #       f"{power_db[highest_idx] - mean_db:.2f} dB above mean")
             else:
                 print("No peaks found above threshold")
                 self.jam_freq = None
@@ -87,7 +87,7 @@ class follwer_jammer(gr.sync_block):
 
     def bandlimited_noise(self, center_freq, num_samples):
         # Complex white noise
-        print(f"(+) center freq = {center_freq}, num_samples = {num_samples}")
+        #print(f"(+) center freq = {center_freq}, num_samples = {num_samples}")
         noise = (np.random.normal(0, self.amplitude, num_samples) +
                  1j * np.random.normal(0, self.amplitude, num_samples)).astype(np.complex64)
 

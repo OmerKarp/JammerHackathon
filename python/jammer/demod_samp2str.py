@@ -120,11 +120,11 @@ class demod_samp2str(gr.sync_block):
                 bit_msg = np.append(bit_msg, 0)
             else:
                 self.number_of_noisy_bits += 1
-                print(f"(+) not found bit, {self.number_of_noisy_bits} / {np.ceil(self.timeout * self.fs / self.samples_per_symble)}")
+                #print(f"(+) not found bit, {self.number_of_noisy_bits} / {np.ceil(self.timeout * self.fs / self.samples_per_symble)}")
                 if self.number_of_noisy_bits >= np.ceil(self.timeout * self.fs / self.samples_per_symble):
                     self.number_of_noisy_bits = 0
                     self.is_signal = False
-                    print("(+) Searching for a preamble")
+                    #print("(+) Searching for a preamble")
                     break
 
         if len(bit_msg) != 8:
