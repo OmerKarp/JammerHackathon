@@ -29,16 +29,15 @@ class demod_samp2str(gr.sync_block):
         self.sample_per_pulse =round(fs*t)
         self.samples_per_symble = self.sample_per_pulse*self.pulse_count_in_symble
         self.samples_per_char = self.samples_per_symble*self.char_len
-        self.voltage = voltage
         self.timeout = timeout
         self.preamble_length = round(fs*t*1)
         self.is_signal = False
         self.bits = np.array([])
         self.remainder = np.array([])
+        self.number_of_noisy_bits = 0
 
     def work(self, input_items, output_items):
         in0 = input_items[0]
-        # <+signal processing here+>
 
         next_char = np.append(self.bits,self.string_from_enqueue(in0, self.fs, self.t))
         if next_char != None:
@@ -64,8 +63,6 @@ class demod_samp2str(gr.sync_block):
             preamble_cor = self.preamble_value*np.ones(self.preamble_length)
             cor = np.correlate(full_data, preamble_cor, "valid")
 
-            max_cor = np.max(cor)
-            #idx_max_cor = np.argmax(cor)
             peaks,_ = find_peaks(cor, distance=self.samples_per_symble,height=threshold )
 
             if(len(peaks)==0):
@@ -74,7 +71,6 @@ class demod_samp2str(gr.sync_block):
             
             idx_max_cor = peaks[0]
 
-            
             print("found pre")
             signal_start_idx = idx_max_cor + self.preamble_length
             self.is_signal = True
@@ -88,20 +84,15 @@ class demod_samp2str(gr.sync_block):
             start_signal_to_end = None
             print("no signal")
             return None
-        
-        
 
-        
         new_remainder_len = len(start_signal_to_end)%(self.samples_per_char)
         self.remainder = start_signal_to_end[-new_remainder_len:] #update remainder
-
 
         cropped_data = start_signal_to_end[:-new_remainder_len] #data to go throu for this iteration
 
         indices = np.arange(0,len(cropped_data), self.sample_per_pulse)
 
         down_sampled = [((np.mean(cropped_data[i:i+self.sample_per_pulse])>0)*2-1) for i in indices] 
-
 
         if len(down_sampled) >= self.char_len*self.pulse_count_in_symble:
             msg = ''
@@ -123,14 +114,18 @@ class demod_samp2str(gr.sync_block):
                 bit_msg = np.append(bit_msg, 1)
             elif self.is_zero(row):
                 bit_msg = np.append(bit_msg, 0)
-            #else:
-                #bit_msg = np.append(bit_msg, 505)
-                #print("not found bit")
-                
+            else:
+                self.number_of_noisy_bits += 1
+                print(f"(+) not found bit, {self.number_of_noisy_bits} / {np.ceil(self.timeout * self.fs / self.samples_per_symble)}")
+                if self.number_of_noisy_bits >= np.ceil(self.timeout * self.fs / self.samples_per_symble):
+                    self.number_of_noisy_bits = 0
+                    self.is_signal = False
+                    print("(+) Searching for a preamble")
+                    break
+
         if len(bit_msg) != 8:
             return ''
 
-        
         bit_msg = ''.join(map(str,bit_msg))  
 
         msg = (chr(int(bit_msg,2)))
@@ -152,18 +147,3 @@ class demod_samp2str(gr.sync_block):
             return True
         else:
             return False
-        
-
-    def normalized_correlate(self, signal, template):
-        n = len(template)
-        cor = np.correlate(signal, template, "valid")
-
-        template_energy = np.sqrt(np.sum(template ** 2))
-
-        signal_sq = signal ** 2
-        signal_energy = np.sqrt(np.convolve(signal_sq, np.ones(n), 'valid'))
-
-        denom = signal_energy * template_energy
-        denom[denom == 0] = 1e-10
-
-        return cor / denom    

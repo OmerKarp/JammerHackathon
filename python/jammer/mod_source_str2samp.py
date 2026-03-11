@@ -26,13 +26,12 @@ class mod_source_str2samp(gr.sync_block):
         self.msg = msg
         self.preamble_length = round(fs*t*1)
         self.preamble_value = 1
+        self.one_bit = np.concatenate((np.ones(round(2*t*fs)), -1 * np.ones(round(t*fs))))
+        self.zero_bit = np.concatenate((np.ones(round(t*fs)), -1 * np.ones(round(2*t*fs))))
         self.samples_queue = deque([self.preamble_value]*self.preamble_length + self.enqueue_from_string(msg, fs, t).tolist())
-
 
     def work(self, input_items, output_items):
         out = output_items[0]
-        # <+signal processing here+>
-        #out[:] = 5
 
         out_len = len(out[:])
         #print(out_len)
@@ -45,14 +44,12 @@ class mod_source_str2samp(gr.sync_block):
         return len(output_items[0])
 
 
-
-
     def symbol_1(self,fs,t):
-        symbol = np.concatenate((np.ones(round(2*t*fs)), -1 * np.ones(round(t*fs))))
+        symbol = self.one_bit
         return symbol
 
     def symbol_0(self,fs, t):
-        symbol = np.concatenate((np.ones(round(t*fs)), -1 * np.ones(round(2*t*fs))))
+        symbol = self.zero_bit
         return symbol
 
     def enqueue_from_string(self,msg, fs, t):
