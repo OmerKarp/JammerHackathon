@@ -71,13 +71,13 @@ class test_spoofing(gr.top_block, Qt.QWidget):
         self.center_freq = center_freq = 434e6
         self.Tx_gain = Tx_gain = 20
         self.Rx_gain = Rx_gain = 20
-        self.Attacker_gain = Attacker_gain = 30
+        self.Attacker_gain = Attacker_gain = 50
 
         ##################################################
         # Blocks
         ##################################################
 
-        self._Attacker_gain_range = qtgui.Range(0, 50, 1, 30, 200)
+        self._Attacker_gain_range = qtgui.Range(0, 50, 1, 50, 200)
         self._Attacker_gain_win = qtgui.RangeWidget(self._Attacker_gain_range, self.set_Attacker_gain, "'Attacker_gain'", "counter_slider", float, QtCore.Qt.Horizontal)
         self.top_layout.addWidget(self._Attacker_gain_win)
         self.uhd_usrp_sink_0_1_0 = uhd.usrp_sink(

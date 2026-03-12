@@ -45,7 +45,7 @@ blocks:
     start: '0'
     step: '1'
     stop: '50'
-    value: '30'
+    value: '50'
     widget: counter_slider
   states:
     bus_sink: false
@@ -112,7 +112,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: int(100e3)
+    value: int(20e3)
   states:
     bus_sink: false
     bus_source: false
@@ -130,6 +130,24 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [376, 24.0]
+    rotation: 0
+    state: enabled
+- name: blocks_multiply_const_vxx_0
+  id: blocks_multiply_const_vxx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    const: '1000'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [688, 248.0]
     rotation: 0
     state: enabled
 - name: import_0
@@ -151,7 +169,7 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    delay: '2'
+    delay: '5.67'
     f1: '400'
     f2: '500'
     maxoutbuf: '0'
@@ -162,6 +180,35 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [488, 232.0]
+    rotation: 0
+    state: enabled
+- name: qtgui_sink_x_0
+  id: qtgui_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    bw: samp_rate
+    comment: ''
+    fc: '0'
+    fftsize: '1024'
+    gui_hint: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    name: '""'
+    plotconst: 'True'
+    plotfreq: 'True'
+    plottime: 'True'
+    plotwaterfall: 'True'
+    rate: '10'
+    showports: 'False'
+    showrf: 'False'
+    type: complex
+    wintype: window.WIN_BLACKMAN_hARRIS
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [976, 408.0]
     rotation: 0
     state: enabled
 - name: qtgui_waterfall_sink_x_0_0_0
@@ -560,7 +607,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [744, 240.0]
+    coordinate: [936, 200.0]
     rotation: 0
     state: enabled
 - name: uhd_usrp_source_0_0
@@ -1001,8 +1048,10 @@ blocks:
     state: enabled
 
 connections:
+- [blocks_multiply_const_vxx_0, '0', qtgui_sink_x_0, '0']
+- [blocks_multiply_const_vxx_0, '0', uhd_usrp_sink_0_1_0, '0']
+- [jammer_delay_attack_0, '0', blocks_multiply_const_vxx_0, '0']
 - [jammer_delay_attack_0, '0', qtgui_waterfall_sink_x_0_0_1, '0']
-- [jammer_delay_attack_0, '0', uhd_usrp_sink_0_1_0, '0']
 - [uhd_usrp_source_0_0, '0', jammer_delay_attack_0, '0']
 - [uhd_usrp_source_0_0, '0', qtgui_waterfall_sink_x_0_0_0, '0']
 
