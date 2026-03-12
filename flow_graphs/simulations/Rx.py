@@ -11,9 +11,7 @@
 from PyQt5 import Qt
 from gnuradio import qtgui
 from PyQt5 import QtCore
-from gnuradio import analog
 from gnuradio import blocks
-import math
 from gnuradio import filter
 from gnuradio.filter import firdes
 from gnuradio import gr
@@ -27,7 +25,7 @@ from gnuradio import eng_notation
 from gnuradio import jammer
 from gnuradio import uhd
 import time
-import sip
+import math
 
 
 
@@ -83,23 +81,6 @@ class Rx(gr.top_block, Qt.QWidget):
         self._Tx_gain_range = qtgui.Range(0, 50, 1, 20, 200)
         self._Tx_gain_win = qtgui.RangeWidget(self._Tx_gain_range, self.set_Tx_gain, "'Tx_gain'", "counter_slider", float, QtCore.Qt.Horizontal)
         self.top_layout.addWidget(self._Tx_gain_win)
-        self._Rx_gain_range = qtgui.Range(0, 20, 1, 20, 200)
-        self._Rx_gain_win = qtgui.RangeWidget(self._Rx_gain_range, self.set_Rx_gain, "'Rx_gain'", "counter_slider", float, QtCore.Qt.Horizontal)
-        self.top_layout.addWidget(self._Rx_gain_win)
-        self.uhd_usrp_source_0 = uhd.usrp_source(
-            ",".join(("", '')),
-            uhd.stream_args(
-                cpu_format="fc32",
-                args='',
-                channels=list(range(0,1)),
-            ),
-        )
-        self.uhd_usrp_source_0.set_samp_rate(samp_rate)
-        self.uhd_usrp_source_0.set_time_unknown_pps(uhd.time_spec(0))
-
-        self.uhd_usrp_source_0.set_center_freq(center_freq, 0)
-        self.uhd_usrp_source_0.set_antenna("RX2", 0)
-        self.uhd_usrp_source_0.set_gain(Rx_gain, 0)
         self.uhd_usrp_sink_0 = uhd.usrp_sink(
             ",".join(("", '')),
             uhd.stream_args(
@@ -115,41 +96,6 @@ class Rx(gr.top_block, Qt.QWidget):
         self.uhd_usrp_sink_0.set_center_freq(center_freq, 0)
         self.uhd_usrp_sink_0.set_antenna("TX/RX", 0)
         self.uhd_usrp_sink_0.set_gain(Tx_gain, 0)
-        self.qtgui_waterfall_sink_x_0 = qtgui.waterfall_sink_c(
-            4096, #size
-            window.WIN_BLACKMAN_hARRIS, #wintype
-            0, #fc
-            samp_rate, #bw
-            "Tx", #name
-            1, #number of inputs
-            None # parent
-        )
-        self.qtgui_waterfall_sink_x_0.set_update_time(0.10)
-        self.qtgui_waterfall_sink_x_0.enable_grid(False)
-        self.qtgui_waterfall_sink_x_0.enable_axis_labels(True)
-
-
-
-        labels = ['', '', '', '', '',
-                  '', '', '', '', '']
-        colors = [0, 0, 0, 0, 0,
-                  0, 0, 0, 0, 0]
-        alphas = [1.0, 1.0, 1.0, 1.0, 1.0,
-                  1.0, 1.0, 1.0, 1.0, 1.0]
-
-        for i in range(1):
-            if len(labels[i]) == 0:
-                self.qtgui_waterfall_sink_x_0.set_line_label(i, "Data {0}".format(i))
-            else:
-                self.qtgui_waterfall_sink_x_0.set_line_label(i, labels[i])
-            self.qtgui_waterfall_sink_x_0.set_color_map(i, colors[i])
-            self.qtgui_waterfall_sink_x_0.set_line_alpha(i, alphas[i])
-
-        self.qtgui_waterfall_sink_x_0.set_intensity_range(-140, 10)
-
-        self._qtgui_waterfall_sink_x_0_win = sip.wrapinstance(self.qtgui_waterfall_sink_x_0.qwidget(), Qt.QWidget)
-
-        self.top_layout.addWidget(self._qtgui_waterfall_sink_x_0_win)
         self.low_pass_filter_0_0 = filter.interp_fir_filter_fff(
             1,
             firdes.low_pass(
@@ -159,30 +105,13 @@ class Rx(gr.top_block, Qt.QWidget):
                 1e3,
                 window.WIN_HAMMING,
                 6.76))
-        self.low_pass_filter_0 = filter.fir_filter_ccf(
-            1,
-            firdes.low_pass(
-                1,
-                samp_rate,
-                5e3,
-                1e3,
-                window.WIN_HAMMING,
-                6.76))
         self.jammer_mod_source_str2samp_0 = jammer.mod_source_str2samp(t, samp_rate, 'hello')
-        self.jammer_demod_samp2str_0 = jammer.demod_samp2str(t, samp_rate, 1, 0.2)
         self.hilbert_fc_1 = filter.hilbert_fc(6500, window.WIN_HAMMING, 6.76)
         self.blocks_vco_f_0_0 = blocks.vco_f(samp_rate, (2*math.pi*1e3), 1)
-        self.blocks_freqshift_cc_0 = blocks.rotator_cc(2.0*math.pi*(-2e3)/samp_rate)
         self.blocks_add_const_vxx_1_0_0 = blocks.add_const_ff(2)
-        self.analog_fm_demod_cf_1 = analog.fm_demod_cf(
-        	channel_rate=samp_rate,
-        	audio_decim=1,
-        	deviation=1e3,
-        	audio_pass=5000,
-        	audio_stop=6000,
-        	gain=1.0,
-        	tau=(75e-6),
-        )
+        self._Rx_gain_range = qtgui.Range(0, 20, 1, 20, 200)
+        self._Rx_gain_win = qtgui.RangeWidget(self._Rx_gain_range, self.set_Rx_gain, "'Rx_gain'", "counter_slider", float, QtCore.Qt.Horizontal)
+        self.top_layout.addWidget(self._Rx_gain_win)
         self._Attacker_gain_range = qtgui.Range(0, 50, 1, 30, 200)
         self._Attacker_gain_win = qtgui.RangeWidget(self._Attacker_gain_range, self.set_Attacker_gain, "'Attacker_gain'", "counter_slider", float, QtCore.Qt.Horizontal)
         self.top_layout.addWidget(self._Attacker_gain_win)
@@ -191,16 +120,11 @@ class Rx(gr.top_block, Qt.QWidget):
         ##################################################
         # Connections
         ##################################################
-        self.connect((self.analog_fm_demod_cf_1, 0), (self.jammer_demod_samp2str_0, 0))
         self.connect((self.blocks_add_const_vxx_1_0_0, 0), (self.blocks_vco_f_0_0, 0))
-        self.connect((self.blocks_freqshift_cc_0, 0), (self.low_pass_filter_0, 0))
-        self.connect((self.blocks_freqshift_cc_0, 0), (self.qtgui_waterfall_sink_x_0, 0))
         self.connect((self.blocks_vco_f_0_0, 0), (self.low_pass_filter_0_0, 0))
         self.connect((self.hilbert_fc_1, 0), (self.uhd_usrp_sink_0, 0))
         self.connect((self.jammer_mod_source_str2samp_0, 0), (self.blocks_add_const_vxx_1_0_0, 0))
-        self.connect((self.low_pass_filter_0, 0), (self.analog_fm_demod_cf_1, 0))
         self.connect((self.low_pass_filter_0_0, 0), (self.hilbert_fc_1, 0))
-        self.connect((self.uhd_usrp_source_0, 0), (self.blocks_freqshift_cc_0, 0))
 
 
     def closeEvent(self, event):
@@ -222,12 +146,8 @@ class Rx(gr.top_block, Qt.QWidget):
 
     def set_samp_rate(self, samp_rate):
         self.samp_rate = samp_rate
-        self.blocks_freqshift_cc_0.set_phase_inc(2.0*math.pi*(-2e3)/self.samp_rate)
-        self.low_pass_filter_0.set_taps(firdes.low_pass(1, self.samp_rate, 5e3, 1e3, window.WIN_HAMMING, 6.76))
         self.low_pass_filter_0_0.set_taps(firdes.low_pass(1, self.samp_rate, 5e3, 1e3, window.WIN_HAMMING, 6.76))
-        self.qtgui_waterfall_sink_x_0.set_frequency_range(0, self.samp_rate)
         self.uhd_usrp_sink_0.set_samp_rate(self.samp_rate)
-        self.uhd_usrp_source_0.set_samp_rate(self.samp_rate)
 
     def get_center_freq(self):
         return self.center_freq
@@ -235,7 +155,6 @@ class Rx(gr.top_block, Qt.QWidget):
     def set_center_freq(self, center_freq):
         self.center_freq = center_freq
         self.uhd_usrp_sink_0.set_center_freq(self.center_freq, 0)
-        self.uhd_usrp_source_0.set_center_freq(self.center_freq, 0)
 
     def get_Tx_gain(self):
         return self.Tx_gain
@@ -249,7 +168,6 @@ class Rx(gr.top_block, Qt.QWidget):
 
     def set_Rx_gain(self, Rx_gain):
         self.Rx_gain = Rx_gain
-        self.uhd_usrp_source_0.set_gain(self.Rx_gain, 0)
 
     def get_Attacker_gain(self):
         return self.Attacker_gain

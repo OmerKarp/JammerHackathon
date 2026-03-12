@@ -174,7 +174,7 @@ blocks:
     bus_structure: null
     coordinate: [720, 700.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: blocks_add_const_vxx_1_0_0
   id: blocks_add_const_vxx
   parameters:
@@ -209,7 +209,7 @@ blocks:
     bus_structure: null
     coordinate: [360, 744.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: blocks_vco_f_0_0
   id: blocks_vco_f
   parameters:
@@ -294,7 +294,7 @@ blocks:
     bus_structure: null
     coordinate: [912, 728.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: jammer_mod_source_str2samp_0
   id: jammer_mod_source_str2samp
   parameters:
@@ -336,7 +336,7 @@ blocks:
     bus_structure: null
     coordinate: [536, 700.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: low_pass_filter_0_0
   id: low_pass_filter
   parameters:
@@ -450,7 +450,7 @@ blocks:
     bus_structure: null
     coordinate: [528, 872.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: qtgui_waterfall_sink_x_0_0_0
   id: qtgui_waterfall_sink_x
   parameters:
@@ -1562,7 +1562,7 @@ blocks:
     bus_structure: null
     coordinate: [96, 728.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: uhd_usrp_source_0_0
   id: uhd_usrp_source
   parameters:
