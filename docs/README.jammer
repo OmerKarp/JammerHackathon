@@ -1,3 +1,6 @@
+This git is for the project of smart jamming - Omer Karp, Oron Bar Hillel, and Gershon Levi
+Here is an explanation of the important files of the project:
+--------------------------------------------------------------------------------------------
 The grc flow graphs:
 The working simulations with the SDR are in flow_graphs/simulations.
 The other files in flow_graphs are tests done for each block we built, simulated tests with no SDR, and others with.
@@ -7,6 +10,8 @@ The python codes for our blocks of the blue side and red side are in python/jamm
 mod_source_str2samp.py - the encoding of the data with our protocol
 demod_samp2str.py - the decoding of the data with our protocol
 The rest of the files are jammer of all types.
+----------------------------------------------------------------------------------------------
+
 
 This is the jammer-write-a-block package meant as a guide to building
 out-of-tree packages. To use the jammer blocks, the Python namespaces
