@@ -1,7 +1,8 @@
 The grc flow graphs:
-Thr grc simulations flow graphs are in flow_graphs/simulations.
+The working simulations with the SDR are in flow_graphs/simulations.
+The other files in flow_graphs are tests done for each block we built, simulated tests with no SDR, and others with.
 
-The python codes:
+The Python codes:
 The python codes for our blocks of the blue side and red side are in python/jammer.
 mod_source_str2samp.py - the encoding of the data with our protocol
 demod_samp2str.py - the decoding of the data with our protocol
