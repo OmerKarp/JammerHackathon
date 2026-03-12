@@ -1,3 +1,12 @@
+The grc flow graphs:
+Thr grc simulations flow graphs are in flow_graphs/simulations.
+
+The python codes:
+The python codes for our blocks of the blue side and red side are in python/jammer.
+mod_source_str2samp.py - the encoding of the data with our protocol
+demod_samp2str.py - the decoding of the data with our protocol
+The rest of the files are jammer of all types.
+
 This is the jammer-write-a-block package meant as a guide to building
 out-of-tree packages. To use the jammer blocks, the Python namespaces
 is in 'jammer', which is imported as:
